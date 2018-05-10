@@ -78,6 +78,13 @@ class Book(models.Model):
         """
         return reverse('bbok-detail', args=[str(self.id)])
 
+    def display_genre(self):
+        """
+        A Helper function to return the gener that this book belongs to as a
+        string
+        """
+        return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
+    display_genre.short_description = 'Genre'
 
 class BookInstance(models.Model):
     """
