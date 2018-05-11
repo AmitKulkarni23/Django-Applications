@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.urls import reverse
 
 # Create your models here.
 # Creating a model for the Genres of books
@@ -76,7 +77,7 @@ class Book(models.Model):
         Reverse mapping of URL.
         Returns a URL to access a detail record for this book
         """
-        return reverse('bbok-detail', args=[str(self.id)])
+        return reverse('book-detail', args=[str(self.id)])
 
     def display_genre(self):
         """
