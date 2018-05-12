@@ -2,6 +2,11 @@ from django.db import models
 import uuid
 from django.urls import reverse
 
+# Importing the users model
+from django.contrib.auth.models import User
+
+from datetime import date
+
 # Create your models here.
 # Creating a model for the Genres of books
 
@@ -112,10 +117,14 @@ class BookInstance(models.Model):
     # Creating a choice field which represents teh status of the book
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Book availability')
 
+    # Creating a new field which represents the particular user who has borrowed the book
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     # Meta data of teh book
     class Meta:
         ordering = ["due_date"]
+
+        permissions = (("can_mark_returned", "Set book as returned"),)
 
 
     # MODEL METHODS
@@ -126,7 +135,16 @@ class BookInstance(models.Model):
         # Using Python3's string interpolation format
         return f'{self.id} ({self.book.title})'
 
-
+    @property
+    def is_overdue(self):
+        """
+        Property that lets us know whetehr a book is over due
+        Check if due_date is present on this book
+        If yes, then check if today's date is greater than the due date
+        """
+        if self.due_date and date.today() > self.due_date:
+            return True
+        return False
 
 class Author(models.Model):
     """

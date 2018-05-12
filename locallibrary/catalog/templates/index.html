@@ -16,5 +16,7 @@
     <li><strong>Copies Currently available:</strong> {{ available_books }}</li>
     <li><strong>Authors:</strong> {{ num_of_authors }}</li>
   </ul>
-
+<p>
+   You have visited the website {{ num_of_visits }}{% if num_of_visits == 1 %} time{% else %} times{% endif %}.
+</p>
 {% endblock %}
