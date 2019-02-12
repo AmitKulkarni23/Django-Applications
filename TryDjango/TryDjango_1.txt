@@ -1,0 +1,91 @@
+$ django-admin startproject trydjango -> Creating a project
+
+----------------------------------------------------------
+FOLDER STRUCTURE
+
+- src
+	- manage.py
+	- trydjango
+		- __init__.py
+		- settings.py
+		- urls.py
+		- wsgi.py
+
+$ manage.py runserver
+- Starts a HTTP server on 127.0.0.1:8000
+
+---------------------------------
+
+Settings.py
+
+
+BASE_DIR -> The folder holding manage.py( in our case it will src)
+
+SECRET_KEY -> Every Django key has a secret key associated with it
+
+DEBUG -> Don't run with TRUE in production
+
+
+INSTALLED_APPS
+	- Bunch of the apps are installed by default
+	- You would add your applications here
+	- Apps == Components( Little pieces of the greater Django project itself)
+	
+
+Middleware
+	- How requests are handled
+	- How security is handled
+	
+	
+ROOT_URLCONF
+	- This is how Django knows how to route URLs
+	
+
+	
+Templates
+	- HTML templates, where do we store them, how are they rendered.
+	- HTML page that gets rendered in Django
+	
+
+WSGI_APPLICATION
+	- This is how the server works
+	
+DATABASES
+	- Maps to databases
+	
+AUTH_PASSWORD_VALIDATORS
+
+
+STATIC_URL
+	- Where do you store your images, css
+	
+
+Settings.py ios controlling all of this
+
+
+$ python manage.py migrate
+
+- This gets rid of the warning that pops up
+- It's like Django and DBs get cooked together.
+
+
+---------------------------------
+
+
+APPS
+
+Seetings.py -> Some apps are installed by default
+- This is also where you would put thrid party apps as well as your own apps
+
+
+127.0.0.1:8000/admin -> This is an app
+
+
+auth -> Another app
+HOW TO CREATE A USER?
+
+From root of the project( wherver manage.py is)
+$ python manage.py createsuperuser -> user that has access to the admin
+
+
+
