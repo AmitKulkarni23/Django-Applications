@@ -88,4 +88,84 @@ From root of the project( wherver manage.py is)
 $ python manage.py createsuperuser -> user that has access to the admin
 
 
+---------------------------------
 
+CREATING YOUR OWN APP
+
+$ python manage.py startapp products
+
+So a new folder is created under the root
+NOW, the directory structure is:
+
+src
+	- products
+		- migrations
+			- __init__.py
+		__init__.py
+		admin.py
+		apps.py
+		models.py
+		tests.py
+	- trydjango
+		- __init__.py
+		- settings.py
+		- urls.py
+		- wsgi.py
+	
+	- db.sqlite3
+	- manage.py
+	
+
+Each of the apps should do 1 thing and 1 thing only
+Apps -> should be narraow and focussed
+
+
+
+models.py -> Backend -> For instance store a memory of a product
+
+Each model has some fields(from django.db import models)
+
+Example:
+
+# Create your models here.
+class Product(models.Model):
+    title = models.TextField
+    description = models.TextField
+    price = models.TextField
+
+Now you need to register this app in settings.py
+
+
+NEED TO RUN MAKE MIGRATIONS
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+
+Now you need to register your model with the admin of 'products'
+
+products(admin.py)
+
+
+from .models import Product
+admin.site.register(Product)
+
+---------------------------------
+
+PYTHON SHELL FROM DJANGO ENVIRIONMENT
+
+$ python manage.py shell
+- All of the Django project stuff will work inside a python interpreter
+
+
+Product.objects.all()
+	- Returns all the objects added as part of this model
+	
+How to create a new object?
+
+CREATING THINGS IN DBs BY USING THE CMD LINE
+$  Product.objects.create(title="Football", description="90 mins", price = 100, summary = "Messi is the best player")
+
+
+---------------------------------
+
+MODEL FIELDS
