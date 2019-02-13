@@ -169,3 +169,6 @@ $  Product.objects.create(title="Football", description="90 mins", price = 100, 
 ---------------------------------
 
 MODEL FIELDS
+
+
+Django Field Types -> https://docs.djangoproject.com/en/2.1/ref/models/fields/
