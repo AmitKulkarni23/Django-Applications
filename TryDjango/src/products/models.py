@@ -14,5 +14,5 @@ class Product(models.Model):
     # Summary is a text field
     summary = models.TextField(blank=False, null=False)
 
-    featured = models.BooleanField()
+    featured = models.BooleanField(default=False)
 

@@ -61,3 +61,16 @@ Template Loader:
 ------------------------------
 
 Django Model Forms
+
+
+- Allow users to save data into database
+
+forms.py -> Inside any app
+
+
+form.as_p -> This is a built-in Django thing which converts the form that we are actually passing into a 
+HTML form with <p> tags
+
+------------------------------
+
+RAW HTML Form
