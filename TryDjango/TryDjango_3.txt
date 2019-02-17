@@ -1,0 +1,63 @@
+Render Data from the Database with a Model
+
+
+from products.model import Product
+
+$ Product.objects.get(id = 1)
+
+$ obj.title -> ALlows you to grab data from database
+
+
+Django -> auto incremented id
+(check in migrations -> id is a AutoField)
+
+Create a view in products/views.py
+Create a template
+
+def product_detail_view(request):
+    obj = Product.objects.get(id=1)
+    context = {
+        'title': obj.title,
+        'description': obj.description
+    }
+    return render(request, "product/detail.html", context)
+	
+
+But this contxt is highly dependent on the object
+Therefore, use something as below
+
+
+def product_detail_view(request):
+    obj = Product.objects.get(id=1)
+    context = {
+        'object': obj
+    }
+    return render(request, "product/detail.html", context)
+
+
+
+------------------------------
+
+How Django Templates load with Apps
+
+Keep everything about an app inside that app - Best practice
+Reusability
+
+But what about templates?
+
+
+Inside of your app you can have a folder called as templates
+
+So whenever you get a template is not present look at the Template Loader
+
+Template Loader:
+- first looks at the file system loader for the specific template(*.html) file
+- Next site-packages\django\contrib\admin\templates\products
+- Next ite-packages\django\contrib\auth\templates\products
+- Next TryDjango\src\products\templates\products\detail.html
+
+
+
+------------------------------
+
+Django Model Forms

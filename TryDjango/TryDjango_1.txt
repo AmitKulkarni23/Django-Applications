@@ -172,3 +172,48 @@ MODEL FIELDS
 
 
 Django Field Types -> https://docs.djangoproject.com/en/2.1/ref/models/fields/
+
+# NOTE: Before doing the below
+Delete
+	- Products\migrations\*
+	- db.sqlite3
+
+
+class Products(models.Model)
+	# Title field should be limited to how long it is
+    title = models.CharField(max_length=120)
+
+    description = models.TextField(blank=True, null=True)
+
+    # Decimal Field
+    price = models.DecimalField(decimal_places=2, max_digits=1000)
+
+    # Summary is a text field
+    summary = models.TextField()
+	
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+NEED TO CREATE SUPERUSER AGAIN
+$ python manage.py createsuperuser
+
+---------------------------------
+
+Making Changes to our model without deleting the database
+
+When we run "makemigrations" and "migrate" -> syncs the database with our model
+
+
+Suppose we add a new "BooleanField", the subsequent objects ion the model might know about this field,
+but what about teh previous ones?
+
+
+Example:
+# Add the below line to Products class
+
+featured = models.BooleanField()
+
+# Note: if null = True -> I don't care about the previous products, just make the "featured" field = True for all teh previous objects
+# if default = True -> Make the default value for all the products to be True, all the subsequent objects
+# blank = True( field is not required ), blank = False(not required) -> JUST RENDERING THE FIELD. NOT DEALING WITH THE DATABASE
+

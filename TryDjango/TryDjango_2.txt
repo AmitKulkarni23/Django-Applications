@@ -1,0 +1,202 @@
+Views
+
+-> The thing that the user sees -> UI
+-> Handles our requests
+
+Create a new app "pages".
+-> Add this app to your settings.py
+
+-> Views -> handle various web pages
+pages\views.py
+
+# Create your views here.
+def home_view(*args, **kwargs):
+    return HttpResponse("<h1>Hello World</h1>")
+	
+
+NOW WE NEED TO REGISTER THIS VIEW WITH DJANGO
+trydjango\urls.py
+
+
+------------------------
+
+URL Patterns
+
+What is happening inside path() call?
+	- Django knows that something is being requested
+	- When a new request comes in, it will look for a URL in urls.py and will match a
+	  match a view to handle that URL
+	  
+	- When we go to a URL, we are requesting / asking for a web page at that URL
+
+If you print the args and kwargs that are passed to the view functions
+def some_view(request, *args, **kwargs):
+	"""
+	"""
+
+request -> <WSGIRequest: GET '/'>
+
+
+args ->()
+kwargs -> {}
+
+
+What is this request?
+request.user -> Authentication
+
+So request.user -> Will print out whoever is logged in
+
+
+
+------------------------
+
+
+Django Templates
+
+
+The standard response is a HttpResponse
+
+Instead of writing just HTML strings, we can use some shortcuts
+
+
+Example:
+	return render(request, "home.html", {})
+	
+In the root of the Django project
+	- templates/
+	Create a html file
+	
+But this templates folder is not yet registered with the Django engine
+settings.py -> TEMPLATES -> DIRS[]
+
+'DIRS': [os.path.join(BASE_DIR, "templates")]	
+
+
+Templating engine:
+
+<h1> The user is {{request.user}} </h1>
+
+OR
+
+<h1> The user is logged in ? {{ request.user.is_authenticated }} </h1>
+
+
+SOME OF THE PAGES WILL SHARE SOME INFORMATION
+- Metadata
+- CSS Data
+
+Template inheritance
+
+Root page -> page from which all of these pages will borrow from
+
+{% block content %}
+{% endblock %}
+
+
+Include tag -> Including an external template
+{% include 'navbar.html' %}
+
+If you need to make a slight change in your navbar, just change the navbar.html
+
+
+------------------------
+
+
+RENDERING CONTEXT
+
+- Main thing about rednerign is rendering data from a backend.
+
+
+TEMPLATE CONTEXT
+
+render(request, "home.html", {})
+
+{} -> is the context
+Takes template + some context -> mashes them together
+
+Context -> can be any data type
+
+Context Variable -> Example -> {{ request.user }}
+
+Example:
+
+def about_view(request, *args, **kwargs):
+    my_context = {
+        "my_text" : "This is about us",
+        "my_number" : 23
+    }
+    return render(request, "about.html", my_context)
+	
+In about.html
+<p>
+    {{ my_text }}, {{ my_number }}
+</p>
+
+
+------------------------
+
+For loops in templates
+
+We can run a for-loop on any context variable
+
+
+<ul>
+
+{% for item in my_list %}
+    <li>{{item}}</li>
+{% endfor %}
+</ul>
+
+
+Note:
+
+{{ forloop.counter }} - {{item}}
+forloop.counter -> Will give us where we are in the loop
+
+------------------------
+
+Conditions in a template
+
+
+if-else -> statement
+
+Logic is handled inside the view
+You dont want the template to do it
+
+
+{% if abc == 312 %}
+{% endif %}
+
+
+abc| add : 22 -> This add:22 is Django specific
+add : 22 -> Built-in template tag
+
+------------------------
+
+Template Tags and Filters
+
+Example:
+
+extends
+include
+add:<number>
+block
+for
+if
+safe
+striptags
+
+comment
+{% comment "Optional Note" %}
+	<p> This is a comment </p>
+{% endcomment %}
+
+capfirst
+
+
+We can stack the filters 1  after the another
+
+{{ value|capfirst|upper}}
+
+------------------------
+
