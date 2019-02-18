@@ -4,6 +4,7 @@ from .models import Product
 from .forms import ProductForm
 from .forms import RawProductForm
 
+
 # Create your views here.
 def product_detail_view(request):
     obj = Product.objects.get(id=1)
@@ -19,20 +20,20 @@ def product_detail_view(request):
 
 # How to accept data from a user
 # How to save data from a POST request onto a form
-# def product_create_view(request):
-#     form = ProductForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#
-#         # Below Statement : So that whenever user has
-#         # entered a valid statement gets a fresh new form
-#         # to enter data into
-#         form = ProductForm()
-#
-#     context = {
-#         "form" : form
-#     }
-#     return render(request, "products/product_create.html", context)
+def product_create_view(request):
+    form = ProductForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+
+        # Below Statement : So that whenever user has
+        # entered a valid statement gets a fresh new form
+        # to enter data into
+        form = ProductForm()
+
+    context = {
+        "form" : form
+    }
+    return render(request, "products/product_create.html", context)
 
 
 
@@ -47,17 +48,17 @@ def product_detail_view(request):
 #     return render(request, "products/product_create.html", context)
 
 
-def product_create_view(request):
-    my_form = RawProductForm()
-    if request.method == "POST":
-        my_form = RawProductForm(request.POST)
-        if my_form.is_valid():
-            # Data is good
-            print(my_form.cleaned_data)
-            Product.objects.create(**my_form.cleaned_data)
-        else:
-            print(my_form.errors)
-    context = {
-        "form" : my_form
-    }
-    return render(request, "products/product_create.html", context)
+# def product_create_view(request):
+#     my_form = RawProductForm()
+#     if request.method == "POST":
+#         my_form = RawProductForm(request.POST)
+#         if my_form.is_valid():
+#             # Data is good
+#             print(my_form.cleaned_data)
+#             Product.objects.create(**my_form.cleaned_data)
+#         else:
+#             print(my_form.errors)
+#     context = {
+#         "form" : my_form
+#     }
+#     return render(request, "products/product_create.html", context)

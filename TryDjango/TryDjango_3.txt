@@ -74,3 +74,70 @@ HTML form with <p> tags
 ------------------------------
 
 RAW HTML Form
+
+
+
+GET -> is the default method for a form
+Similar to search on a website
+
+
+
+CSRF verification failed -> Security measures that Django has built-in
+
+action -> in an input form means that you can send the data to a URL
+method -> POST / GET
+
+
+GET -> your are getting information from a URL
+POST -> When you want to save information to backend you use POST
+
+
+request.GET
+request.POST
+
+<form action='http://www.google.com/search method="GET">
+    <input type='text' name='q' placeholder="Your Search">
+    <input type='submit' value="Save"/>
+</form>
+
+------------------------------
+
+
+Pure Django Form
+- for validation errors
+
+
+form.as_p
+form.as_ul
+
+------------------------------
+
+Form Widgets
+
+- Working with individual fields in a form
+
+
+class RawProductForm(forms.Form):
+    title = forms.CharField(label='', widget=forms.TextInput(attrs={"placeholder" : "Enter your title"}))
+    description = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={
+            "placeholder":"Enter your description",
+            "class": "my-description-class",
+            "rows": 10,
+            "cols": 20,
+            "id": "my-description-id",
+    }))
+    price = forms.DecimalField(initial=1.99)
+
+	
+------------------------------
+
+
+
+Form validation Methods
+
+- Django has a built-in validation for its fields
+
+------------------------------
+
+Initial Data on a form
