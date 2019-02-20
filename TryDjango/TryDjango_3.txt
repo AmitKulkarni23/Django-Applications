@@ -260,6 +260,17 @@ the url change to /products/<id>/ or dynamic/<id>
 
 This is where namespacing comes in
 
+Create file called urls.py inside the app Products
+Add necesary imports
+
+Copy the urlpatterns from the urls.py to the products/urls.py
+
+
+app_name = "products"
+
+    def get_absolute_url(self):
+        # Call the name of the URL that will handle the data
+        return reverse("products:product-detail", kwargs={"id": self.id})
 
 
 

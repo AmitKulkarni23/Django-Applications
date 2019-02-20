@@ -19,4 +19,4 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         # Call the name of the URL that will handle the data
-        return reverse("product-detail", kwargs={"id": self.id})
+        return reverse("products:product-detail", kwargs={"id": self.id})

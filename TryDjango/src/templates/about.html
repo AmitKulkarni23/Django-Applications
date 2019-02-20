@@ -4,22 +4,9 @@
     This is the Abouts page
 </h1>
 <p>
-    {{ my_text }}, {{ my_number }}
+    {{ obj.title }}
+    {{ obj.description }}
+    {{ obj.price }}
 </p>
-<ul>
 
-{% for item in my_list %}
-    {% if item == 23 %}
-        <li>This is MJ</li>
-    {% else %}
-        <li>{{item}}</li>
-    {% endif %}
-{% endfor %}
-</ul>
-
-{% endblock %}
-{% block another_content %}
-<h2>
-    Woaah this is another block
-</h2>
 {% endblock %}

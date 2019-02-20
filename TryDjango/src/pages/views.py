@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from products.models import Product
 
 
 # Create your views here.
@@ -13,11 +14,10 @@ def contact_view(request, *args, **kwargs):
     return render(request, "contact.html", {})
 
 
-def about_view(request, *args, **kwargs):
+def about_view(request, id):
+    obj = Product.objects.get(id=id)
     my_context = {
-        "my_text" : "This is about us",
-        "my_number" : 23,
-        "my_list" : [23, 33, 0, 1]
+        "obj" : obj,
     }
     return render(request, "about.html", my_context)
 
