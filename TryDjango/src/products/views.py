@@ -7,12 +7,11 @@ from django.http import Http404
 
 
 # Create your views here.
-def product_detail_view(request):
-    obj = Product.objects.get(id=1)
-    # context = {
-    #     'title': obj.title,
-    #     'description': obj.description
-    # }
+def product_detail_view(request, id):
+    try:
+        obj = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        raise Http404
     context = {
         "object" : obj
     }
@@ -102,3 +101,15 @@ def product_delete_view(request, id):
     }
     return render(request, "products/product_delete.html", context)
 
+
+def product_list_view(request):
+    """
+    Function that will list out all the products in a database
+    :param request: the Http request object
+    :return:
+    """
+    queryset = Product.objects.all()
+    context = {
+        "object_list" : queryset,
+    }
+    return render(request, "products/product_list_view.html", context)

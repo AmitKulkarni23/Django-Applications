@@ -220,4 +220,46 @@ if request.method == "POST"
 
 View of a list of database objects
 
+queryset = Product.objects.all()
+
+------------------------------
+
+Dynamic Linking of URLs
+
+
+Creating links to products -> Need to create an instance method on our model
+
+------------------------------
+
+Django URLs Reverse
+
+
+make our method in models ( get_absolute_url ) completely dynamic
+
+
+from django.urls import reverse
+
+
+Call the name of the URL that will handle this data
+reverse("product-detail", kwargs={"id" : self.id})
+
+
+------------------------------
+
+In App Urls and namespacing
+
+Suppose you have some urlpatterns as below:
+
+path('dynamic/<int:id>/', dynamic_lookup_view, name="product-detail"),
+path('products/<int:id>/', product_detail_view, name="product-detail"),
+
+The names here are same.
+So in the list of database objects, if I click on a particular product, would
+the url change to /products/<id>/ or dynamic/<id>
+
+
+This is where namespacing comes in
+
+
+
 
