@@ -17,7 +17,7 @@ class ProductForm(forms.ModelForm):
 
     # New form field
     email = forms.EmailField()
-    
+
     class Meta:
         model = Product
         fields = [

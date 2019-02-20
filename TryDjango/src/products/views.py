@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Product
 from .forms import ProductForm
 from .forms import RawProductForm
+from django.http import Http404
 
 
 # Create your views here.
@@ -36,6 +37,18 @@ def product_create_view(request):
     return render(request, "products/product_create.html", context)
 
 
+def render_initial_data(request):
+    initial_data = {
+        'title': "Great Title",
+        'description': "Initial Title",
+        'price': 10.99
+    }
+    form = ProductForm(request.POST or None, initial=initial_data)
+    context = {
+        "form" : form,
+    }
+    return render(request, "products/product_create.html", context)
+
 
 # RAW HTML DATA
 # Shows how POST and GET methods work
@@ -62,3 +75,30 @@ def product_create_view(request):
 #         "form" : my_form
 #     }
 #     return render(request, "products/product_create.html", context)
+
+
+def dynamic_lookup_view(request, id):
+    # obj = Product.objects.get(id=id)
+    # obj = get_object_or_404(Product, id=id)
+    try:
+        obj = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        raise Http404
+
+    context = {
+        "object" : obj
+    }
+    return render(request, "products/product_detail.html", context)
+
+
+def product_delete_view(request, id):
+    obj = get_object_or_404(Product, id=id)
+    # Confirming delete
+    if request.method == "POST":
+        obj.delete()
+        return redirect("../../")
+    context = {
+        "object": obj
+    }
+    return render(request, "products/product_delete.html", context)
+

@@ -141,3 +141,83 @@ Form validation Methods
 ------------------------------
 
 Initial Data on a form
+
+
+initial = {
+	"title" : "Initial Title"
+	}
+	
+form = RawProductForm(request.POST or None, initial = initial)
+context = {
+	"form" : form,
+}
+
+return render(request, "products/product_create.html", context}
+
+
+
+Can initialize the data to be from data from one of the objects in the database
+
+obj = Product.objects.get(id = 1)
+form = RawProductForm(request.POST or None, initial = obj)
+if form.is_valid():
+	form.save()
+	# Note the object with id = 1 will be changed with whatever fields taht you enter here
+context = {
+	"form" : form,
+}
+
+return render(request, "products/product_create.html", context}
+
+------------------------------
+
+
+Dynamic URL Routing
+
+
+In urls.py
+path('dynamic/<int:id>/', dynamic_lookup_view)
+
+In views.py
+def dynamic_lookup_view(request, id):
+    obj = Product.objects.get(id=id)
+    context = {
+        "object" : obj
+    }
+    return render(request, "products/product_detail.html", context)
+	
+	
+------------------------------
+
+
+Handle DoesNotExist
+
+- Handling a missing object from a dynamic URL
+
+1st way:
+from django.shortcuts import render, get_object_or_404
+obj = get_object_or_404(Product, id=id)
+
+
+2nd way:
+from django.http import Http404
+try:
+	obj = Product.object.get(id=id)
+except Product.DoesNotExist:
+	raise Http404
+	
+
+------------------------------
+
+Delete and Confirm
+
+if request.method == "POST"
+	obj.delete()	
+	return redirect("../../")
+	
+	
+------------------------------
+
+View of a list of database objects
+
+
