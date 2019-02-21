@@ -274,3 +274,8 @@ app_name = "products"
 
 
 
+------------------------------
+
+
+Class based Views
+
