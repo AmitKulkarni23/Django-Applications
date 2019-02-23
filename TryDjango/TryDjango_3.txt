@@ -366,6 +366,14 @@ Update View
 -> Only difference is that it uses the object
 def get_object():
 
-
-
 ------------------------------
+
+
+DeleteView
+
+- Once you delete an object( press "Yes" ) you get an error message saying
+that the success URL doesn't exist.
+
+Django doesn't know where to go after deleteion.
+get_absolute_url -> is not seen after deleting an object
+
