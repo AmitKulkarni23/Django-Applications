@@ -10,4 +10,4 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         # Call the name of the URL that will handle the data
-        return reverse("articles:article-list", kwargs={})
+        return reverse("articles:article-detail", kwargs={"id":self.id})

@@ -279,3 +279,93 @@ app_name = "products"
 
 Class based Views
 
+Some of the generic class based views:
+
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    ListView,
+    UpdateView,
+    DeleteView,
+)
+
+
+class ArticleListView(ListView)
+- for ListView we have to provide a queryset
+- this is a requirement
+
+
+By default, class based views look for a template.
+How does it look for a template?
+
+<app_name>/modelname_viewname.html
+
+Example:
+blog/article_list.html
+
+------------------------------
+
+Detail View
+
+
+-> Gives you the control of the object
+-> All the details related to the object, you will have control
+
+For instance
+class Article:
+	title, 
+	content
+	active
+	
+In the template, you can simply do
+{{ object.title }}
+{{ object.content }}
+{{ object.active }}
+
+
+The URL should be as below:
+
+In urls.py
+path("<int:pk>", ArticleDetailView.as_view(), name="article-list")
+
+pk -> primary key
+id -> is the ID of the object present in database
+slug -> 
+
+
+If you want ID, the override
+def get_object(self):
+	id_ = self.kwargs.get("id")
+	return get_object_or_404(Article, id=id_)
+	
+------------------------------
+
+CreateView
+
+-> Create something in your application
+-> Add something to your database via a form
+
+
+Error:
+Using ModelFormMixin (base class of ArticleCreateView) without the 'fields' attribute is prohibited.
+
+form_class = ArticleForm
+
+
+If you want to see what data is coin in from a form
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super().form_valid(form)
+		
+
+------------------------------
+
+Update View
+-> Same as CreateView above
+
+-> Only difference is that it uses the object
+def get_object():
+
+
+
+------------------------------
