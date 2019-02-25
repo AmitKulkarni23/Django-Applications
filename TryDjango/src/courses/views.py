@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import Course
 from .forms import CourseForm
@@ -58,4 +58,74 @@ class CourseCreateView(View):
             form = CourseForm()
 
         context = {"form": form}
+        return render(request, self.template_name, context)
+
+
+class CourseUpdateView(View):
+    template_name = "courses/course_update.html"
+
+    def get_object(self):
+        id = self.kwargs.get("id")
+        obj = None
+        if id:
+            obj = get_object_or_404(Course, id=id)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        # Rendering the form
+        context = {}
+        obj = self.get_object()
+
+        if obj:
+            form = CourseForm(instance=obj)
+            context["object"] = obj
+            context["form"] = form
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        # Saving the form
+        context = {}
+        obj = self.get_object()
+        if obj:
+            form = CourseForm(request.POST, instance=obj)
+            if form.is_valid():
+                form.save()
+                print("Form Saved")
+
+            context["object"] = obj
+            context["form"] = form
+
+        return render(request, self.template_name, context)
+
+
+class CourseDeleteView(View):
+    template_name = "courses/course_delete.html"
+
+    def get_object(self):
+        id = self.kwargs.get("id")
+        obj = None
+        if id:
+            obj = get_object_or_404(Course, id=id)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        # Rendering the form
+        context = {}
+        obj = self.get_object()
+
+        if obj:
+            context["object"] = obj
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        # Saving the form
+        context = {}
+        obj = self.get_object()
+        if obj:
+            obj.delete()
+            context["object"] = None
+            return redirect("/courses/")
+
         return render(request, self.template_name, context)

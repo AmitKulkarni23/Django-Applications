@@ -1,0 +1,47 @@
+Function Based View to Class Based View
+
+Converting function based views to class based views
+Use from django.views import View
+
+Note:
+The function names inside a subclass of the class View matter here
+
+Function name -> get
+Function mae -> post
+
+----------------
+
+Raw Detail Class Based View
+
+Overloading of a function
+
+----------------
+
+Raw List Class based View
+
+----------------
+
+Raw Create Class Based Views
+
+----------------
+
+Form Validation on a Post Method
+
+In form we can have validation
+
+----------------
+
+Raw Update View
+
+----------------
+
+Raw Delete View
+
+obj.delete()
+
+----------------
+
+Mixin -> allows to extend a class based view with some new code
+
+
+	
