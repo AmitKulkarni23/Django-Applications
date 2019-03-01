@@ -26,3 +26,11 @@ class ContactForm(forms.Form):
             raise forms.ValidationError("Email has to be gamil.com")
 
         return email
+
+
+class LoginForm(forms.Form):
+    """
+    Class based form for user to log-in into
+    """
+    user_name = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)

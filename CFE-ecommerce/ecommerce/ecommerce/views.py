@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import ContactForm
+from .forms import ContactForm, LoginForm
+from django.contrib.auth import authenticate, login
 
 
 def home_page(request):
@@ -28,3 +29,37 @@ def contact_page(request):
     #     print(request.POST.get("full_name"))
     return render(request, "contact/view.html", context)
 
+
+def login_page(request):
+    form = LoginForm(request.POST or None)
+    context = {
+        "form": form
+    }
+
+    # This is built into Django
+    # print("User logged in")
+    # print(request.user.is_authenticated)
+    if form.is_valid():
+        user = authenticate(request,
+                            username=form.cleaned_data.get("user_name"),
+                            password=form.cleaned_data.get("password"))
+        if user is not None:
+            # Login the user
+            login(request, user)
+
+            # Create a new instance of the form
+            # That is clearing the form
+            context["form"] = LoginForm()
+
+            # Redirect to teh login page again( success page )
+            return redirect("/login")
+        else:
+            print("Error")
+    return render(request, "auth/login.html", context)
+
+
+def register_page(request):
+    form = LoginForm(request.POST or None)
+    if form.is_valid():
+        print(form.cleaned_data)
+    return render(request, "auth/register.html", {})

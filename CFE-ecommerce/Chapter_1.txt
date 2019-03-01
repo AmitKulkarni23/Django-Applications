@@ -1,0 +1,55 @@
+To set up our templates you have to add the templates folder to settings.py
+Add an item to the list TEMPLATES
+
+'DIRS': [os.path.join(BASE_DIR, 'templates')]
+
+--------------------------------
+
+if request.method == "POST"
+	print(request.POST) # Will be a dictionary of all the elements in the form
+
+--------------------------------
+
+Forms:
+
+def clean_email(self):
+	self.cleaned_data.get("email")
+	
+	
+--------------------------------
+
+Logging-in a user
+
+-> If you haven't done migrations and use
+request.user.is_authenticated() -> You will get a no such table django_session error
+
+$ python manage.py createsuperuser
+
+How to authenticate the user once you get the login details?
+from django.contrib.auth import login, authenticate
+
+
+if form.is_valid():
+	user = authenticate(request, username=form.cleaned_data.get("user_name"), password=form.cleaned_data.get("password"))
+	
+	if user is not None:
+		
+		# login the user
+		login(request, user)
+		
+		# Clean the form
+		context["form'] = LoginForm()
+		
+		# Redirect to a success page
+		redirect("/login")
+	else:
+		
+		# Error
+		print("Error")
+
+
+--------------------------------
+
+
+
+
