@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.views.generic import ListView, DetailView
 from .models import Product
+from .utils import unique_slug_generator
+from django.db.models.signals import pre_save, post_save
 
 
 class ProductListView(ListView):
@@ -133,3 +135,38 @@ class ProductFeaturedDetailView(DetailView):
     #     :return:
     #     """
     #     return Product.objects.featured()
+
+
+# ===========================================================
+class ProductDetailSlugView(DetailView):
+    """
+    To handle URLs based on slugs
+    """
+    queryset = Product.objects.all()
+    template_name = "products/detail.html"
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        # instance = get_object_or_404(Product, slug=slug)
+        try:
+            instance = Product.objects.get(slug=slug)
+        except Product.DoesNotExist:
+            raise Http404("Product Not found")
+        except Product.MultipleObjectsReturned:
+            qs = Product.objects.filter(slug=slug)
+            instance = qs.first()
+        except:
+            raise Http404("Woaaahhh!!!")
+        return instance
+
+
+def product_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+# This is a Signal
+# Before anything goes into the db this is executed
+pre_save.connect(product_pre_save_receiver, sender=Product)
+
+

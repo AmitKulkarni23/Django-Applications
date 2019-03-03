@@ -48,6 +48,9 @@ class Product(models.Model):
     The model for a product
     """
     title = models.CharField(max_length=120)
+
+    # Adding a slug field
+    slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
     price = models.DecimalField(decimal_places=2, max_digits=10, default=9.99)
 
