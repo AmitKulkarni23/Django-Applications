@@ -1,3 +1,8 @@
+"""
+Credits -> https://stackoverflow.com/questions/47961349/unique-slug-generator
+Credits -> Join CFE -> Coding for entrepreneurs
+"""
+
 import string
 
 from django.utils.text import slugify
