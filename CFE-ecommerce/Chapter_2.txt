@@ -177,3 +177,75 @@ whereas filter will return an empty list
 
 Custom Model Managers
 
+
+Ability to call a queryset on a model
+- doing it because of objects
+- objects is a model manager
+- like get call on model
+- filter -> model manager method
+
+Model manager easier to do lookups
+
+In models.py
+
+class ProductManager(models.Manager):
+    def get_by_id(self, id):
+        qs = self.get_queryset().filter(id=id)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
+		
+--------------------
+
+
+Featured and Custom Querysets
+
+
+--------------------
+
+
+Slug Fields and Signals
+
+Slug -> short label
+Eg: taking a title and making it user friendly
+
+NOTE: Admin panel
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "slug"]
+
+    class Meta:
+        model = Product
+
+
+admin.site.register(Product, ProductAdmin)
+
+
+
+class ProductSlugView(DetailView):
+	template_name = "products/detail.html"
+	query_set = Products.objects.all()
+	
+http://127.0.0.1:8000/products/ctci/ -> Now this will work
+
+GET through slugs might return an exception -> MultipleObjectsReturned
+
+Therefore, we want our slugs to be unique
+In models.py add the unique field
+
+Checkout unique slug generator at https://stackoverflow.com/questions/47961349/unique-slug-generator
+
+--------------------
+
+
+Product URLs
+
+In models.py
+def get_absolute_url(self):
+	return f"/products/{self.slug}"
+
+{% for object in object_list %}
+    <a href="{{ object.get_absolute_url }}">{{ object.title }}</a> <br/>
+
+{% endfor %}
