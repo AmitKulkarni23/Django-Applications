@@ -51,5 +51,34 @@ if form.is_valid():
 --------------------------------
 
 
+User Registration
 
+
+
+if request.user.is_authenticated:
+	# Do something for a logged-in user( premium user )
+	
+Password matching to be done here
+
+
+What about registering a user?
+from django.contrib.auth import get_user_model
+
+
+If 2 or more users with the same details(username, password or email) then you will get an UNIQUE Constraint failed error
+
+    def clean_user_name(self):
+        """
+        Check if a user already exists.
+        To solve the UNIQUE constraint error
+        :return:
+        """
+        user_name = self.cleaned_data.get("user_name")
+
+        # Query Set
+        qs = User.objects.filter(username=user_name)
+        if qs.exists():
+            raise forms.ValidationError("User name is taken")
+
+        return user_name
 

@@ -119,3 +119,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files are whatever we upload ourselves
+MEDIA_URL = '/media/'
+
+# If we are handling our own CSS / JS where would they be stored?
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static_my_proj")
+]
+
+# All the static files from the CDN server will be put in here
+STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn", "static_root")
+MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
+
