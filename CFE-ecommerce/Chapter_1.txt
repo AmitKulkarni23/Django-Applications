@@ -82,3 +82,35 @@ If 2 or more users with the same details(username, password or email) then you w
 
         return user_name
 
+
+--------------------------------
+		
+For static files -> use CDn / serve them yourself
+Use Apache / AWS
+But testing locally - you need to see your CSS / JS
+
+
+Django -> Should not use this
+
+
+How to handle static files? -> Check Django link
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+]
+
+
+STATIC_CDN -> is emulating a CDN server( this is separate from our Django server)
+
+STATIC_MY_PROJ -> All teh files related to my project
+
+
+$ python manage.py runserver
+
+How to load a static page in Django?
+Use the template tag { % load static % }
+
+
+<img src="{% static "img/working.JPG "%}" class="img-fluid" />
+<link rel="stylesheet" href="{% static "css/main.css" %}">

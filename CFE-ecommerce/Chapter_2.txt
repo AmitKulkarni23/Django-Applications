@@ -1,0 +1,145 @@
+Chapter_2
+
+Products Component
+- Storing the datat
+- Displaying products in a list
+- Get data from database / save data in database
+
+
+--------------------
+
+First App module
+
+Django Web application that is comprised of a number of apps
+
+$ python manage.py startapp 
+
+An app handles and handles one thing well
+For example:
+Product -> Can have 1 product and multiple categories
+
+
+Put this settings.py -> INSTALLED_APPS list
+
+--------------------
+
+Understanding CRUD
+
+Create - POST
+Retrieve / List / Search - GET
+Update - PUT / Patch / POST
+Delete - Delete
+
+CRUD - handles database related actions
+
+
+--------------------
+
+Product Model
+
+
+Model -> How we are going to connect Django with database
+NAME YOUR MODEL AS A SINGULAR ITEM
+
+
+CharField -> limit characters
+TextField -> a lot more data
+
+
+
+$ python manage.py makemigrations
+$ Python manage.py migrate
+
+When you add a new field to your database and run makemigrations, you get an error
+"You are trying to add a non-nullable field "price" to product without a default.
+
+Even though we haven't created any item in the database, Django complains of thsi error
+
+So, when you run makemigrations Django doesn;t make any call to the database, but checks teh migrations folder which has
+"initial.py" file present. There are initial fields present in the initial.py file
+
+
+NOTE: You have to register your model
+In product/admin.py
+
+from .models import Product
+admin.site.register(Product)
+
+--------------------
+
+
+Class Based View
+
+from django.views.generic.list import ListView
+
+
+For class based view:
+The default template is present under product/products_list.html
+
+
+But class based view doesn't have a context
+class ProductListView(ListView):
+    queryset = Product.objects.all()
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        """
+        This is a method that is provided by Django.Every single class based view has this context
+        :param object_list: 
+        :param kwargs:
+        :return:
+        """
+        context = super(ProductListView, self).get_context_data(*args, **kwargs)
+        return context
+		
+
+{'paginator': None, 'page_obj': None, 'is_paginated': False, 'object_list': <QuerySet [<Product: T-Shirt>, <Product: Hat>]>, 'product_list': <QuerySet [<Product: T-Shirt>, <Product: Hat>]>, 'view': <products.vi
+ews.ProductListView object at 0x000002CA458DAF98>}
+
+
+Therefore, in your template:
+{% for object in object_list %}
+    {{ object.title }} <br/>
+
+{% endfor %}
+
+--------------------
+
+DetailView
+
+
+Regular Expressions in Django
+https://www.codingforentrepreneurs.com/blog/common-regular-expressions-for-django-urls/
+
+
+Example:
+class ProductDetailView(DetailView):
+    queryset = Product.objects.all()
+    template_name = "products/detail.html"
+	
+and your URL is:
+products/(?P<pk>\d+)/$ -> Named capturing group if (?P) is used -> https://stackoverflow.com/questions/7988942/what-does-this-django-regex-mean-p
+\d -> Match character class
++ -> means 1 or more expression
+) -> end of capture group
+
+
+pk is being passed in
+
+
+--------------------
+
+
+Image Filed and File Field
+
+We want our products to be a visual thing
+Upload images to a product
+
+
+image = models.FileField(upload_to="products/") -> Uploads to media root
+null = True, blank = True
+
+null -> in the database it can be an empty value
+blank -> not required in Django
+
+
+Can use ImageField and FileField to upload and download files
