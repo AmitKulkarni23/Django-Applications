@@ -143,3 +143,37 @@ blank -> not required in Django
 
 
 Can use ImageField and FileField to upload and download files
+
+--------------------
+
+Understanding Lookups
+
+
+how do you actually lookup things in a dB?
+
+$ python manage.py shell
+
+qs = Product.objects.all()
+hat = qs.filter(title__contains="Hat")
+
+
+qs.filter(description__contains="Hat")
+
+
+NOTE: Use icontains -> for case-insensitivity
+
+
+How to chain these?
+qs.filter(description__contains="Hat", title__iexact="Hat")
+
+
+.get() lookup will be same as filter
+But get() lookup will raise a DoesNotExist error
+
+whereas filter will return an empty list
+
+
+--------------------
+
+Custom Model Managers
+

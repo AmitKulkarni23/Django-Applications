@@ -31,6 +31,17 @@ def upload_image_path(instance, filename):
     return f"products/{new_file_name}/{final_filename}"
 
 
+class ProductManager(models.Manager):
+    def get_by_id(self, id):
+        qs = self.get_queryset().filter(id=id)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
+    def featured(self):
+        return self.filter(featured=True)
+
+
 # Create your models here.
 class Product(models.Model):
     """
@@ -43,5 +54,13 @@ class Product(models.Model):
     # It uploads to media root
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
 
+    # Featured product
+    featured = models.BooleanField(default=False)
+
+    # Extending your custom model manager
+    objects = ProductManager()
+
     def __str__(self):
         return self.title
+
+

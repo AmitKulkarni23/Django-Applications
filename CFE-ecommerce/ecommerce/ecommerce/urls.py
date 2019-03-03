@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from products.views import (
     ProductListView, product_list_view,
     ProductDetailView, product_detail_view,
+    ProductFeaturedDetailView, ProductFeaturedListView,
 )
 urlpatterns = [
     path(r"", home_page),
@@ -32,6 +33,8 @@ urlpatterns = [
     path(r"products-fbv/", product_list_view),
     re_path(r"products/(?P<pk>\d+)/$", ProductDetailView.as_view()),
     re_path(r"^products-fbv/(?P<pk>\d+)/$", product_detail_view),
+    path(r"featured/", ProductFeaturedListView.as_view()),
+    re_path(r"featured/(?P<pk>\d+)/$", ProductFeaturedDetailView.as_view()),
     path('admin/', admin.site.urls),
 ]
 

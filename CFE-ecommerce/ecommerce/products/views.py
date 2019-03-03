@@ -38,7 +38,7 @@ def product_list_view(request):
 
 
 class ProductDetailView(DetailView):
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
     template_name = "products/detail.html"
 
     def get_context_data(self, *args, object_list=None, **kwargs):
@@ -51,6 +51,16 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
         print(context)
         return context
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        pk = self.kwargs.get("pk")
+
+        instance = Product.objects.get_by_id(pk)
+        if instance is None:
+            raise Http404("Detail View is raising an error. Such a product deosn't exist")
+
+        return instance
 
 
 # Function based view
@@ -73,15 +83,53 @@ def product_detail_view(request, pk=None, *args, **kwargs):
     # except:
     #     print("Not sure")
 
-    # Another type of lookup
-    qs = Product.objects.filter(pk=pk)
-    if qs.exists() and qs.count() == 1:
-        instance = qs.first()
-    else:
-        raise Http404("product doesn't exist")
+    instance = Product.objects.get_by_id(id=pk)
+    # print("Instance is ", instance)
+    if not instance:
+        raise Http404("The get by id returned a None. Product doesn't exist")
+
+    # # Another type of lookup
+    # qs = Product.objects.filter(pk=pk)
+    # if qs.exists() and qs.count() == 1:
+    #     instance = qs.first()
+    # else:
+    #     raise Http404("product doesn't exist")
 
     context = {
         "object": instance
     }
 
     return render(request, "products/detail.html", context)
+
+
+# ===========================================================
+
+
+class ProductFeaturedListView(ListView):
+    template_name = "products/product_list.html"
+
+    def get_queryset(self, *args, **kwargs):
+        """
+        Overriding the get_queryset method
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return Product.objects.featured()
+
+
+class ProductFeaturedDetailView(DetailView):
+    """
+    Detail View of a dfeatured object
+    """
+    template_name = "products/featured-detail.html"
+    queryset = Product.objects.featured()
+
+    # def get_queryset(self, *args, **kwargs):
+    #     """
+    #     Overriding the get_queryset method
+    #     :param args:
+    #     :param kwargs:
+    #     :return:
+    #     """
+    #     return Product.objects.featured()
