@@ -1,0 +1,16 @@
+Templates
+- eliminate repetitiveness in HTML documents
+
+=====================
+
+Base Template
+
+base.html -> main spot where all of our content will inherit from
+
+extends tag
+
+=====================
+
+Include Tag
+
+- include other html p[ages into your HTML page
