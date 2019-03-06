@@ -14,3 +14,13 @@ extends tag
 Include Tag
 
 - include other html p[ages into your HTML page
+
+=====================
+
+Pass arguments with include
+
+- passing variables along with the include tag
+- these variables can be actual context dictionary variables
+
+Example:
+{% include "base/navbar.html" with brand_name="eCommerce"%}

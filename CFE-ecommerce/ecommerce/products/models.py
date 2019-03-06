@@ -1,6 +1,7 @@
 from django.db import models
 import random
 import os
+from django.urls import reverse
 
 
 def get_filename_extension(filepath):
@@ -67,6 +68,5 @@ class Product(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return f"/products/{self.slug}"
-
-
+        # return f"/products/{self.slug}"
+        return reverse("products:detail", kwargs={"slug": self.slug})

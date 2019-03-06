@@ -25,7 +25,7 @@ urlpatterns = [
     path(r"contact/", contact_page),
     path(r"login/", login_page),
     path(r"register/", register_page),
-    path("products/", include("products.urls")),
+    path("products/", include("products.urls", namespace="products")),
     path('admin/', admin.site.urls),
 ]
 
