@@ -6,7 +6,7 @@ from .views import (
 
 app_name = "products"
 urlpatterns = [
-    path(r"", ProductListView.as_view()),
+    path(r"", ProductListView.as_view(), name="list"),
     re_path(r"^(?P<slug>[\w-]+)/$", ProductDetailSlugView.as_view(), name="detail"),
 
 ]

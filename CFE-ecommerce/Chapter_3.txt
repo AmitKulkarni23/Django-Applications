@@ -24,3 +24,39 @@ Pass arguments with include
 
 Example:
 {% include "base/navbar.html" with brand_name="eCommerce"%}
+
+
+=====================
+
+Reusable Live Snippets
+
+
+Bootstrap Cards
+
+-> Similar to include with tag
+
+=====================
+
+
+Reverse for URLs
+
+reverse -> works in templates
+reverse -> also works in models
+
+Templates
+- You can do something like:
+<a href="{% url 'detail' slug=instance.slug%}" class="btn btn-warning">URL shortcut</a>
+
+and teh actual URL could be:
+re_path(r"^(?P<slug>[\w-]+)/$", ProductDetailSlugView.as_view(), name="detail")
+
+In Models:
+def get_absolute_url(self):
+	# return f"/products/{self.slug}"
+	return reverse("detail", kwargs={"slug": self.slug})
+
+
+But, you should ad namespacing here
+
+
+=====================
