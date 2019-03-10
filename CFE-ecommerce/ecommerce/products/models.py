@@ -61,6 +61,12 @@ class Product(models.Model):
     # Featured product
     featured = models.BooleanField(default=False)
 
+    # Adding the timestamp to the product
+    # auto_now_add=True -> means that when we save this field into the database
+    # this field will be set for us automatically
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
     # Extending your custom model manager
     objects = ProductManager()
 

@@ -56,7 +56,43 @@ def get_absolute_url(self):
 	return reverse("detail", kwargs={"slug": self.slug})
 
 
-But, you should ad namespacing here
+But, you should add namespacing here
+
+=====================
+
+Navbar
+
+
+URL shortcut names
+{% url "home" as home_url %}
+
+
+<li class="nav-item {% if request.path == home_url %}active{% endif %}">
+        <a class="nav-link" href="{{ home_url }}">Home <span class="sr-only">(current)</span></a>
+</li>
 
 
 =====================
+
+Template Filters
+
+Example
+- {{ instance.description| truncatewords:12 }}
+
+
+- Can chain template filters
+{{ instance.description| linebreaks | truncatewords:12 }}
+
+title -> titles it out
+
+
+# Adding the timestamp to the product
+# auto_now_add=True -> means that when we save this field into the database
+# this field will be set for us automatically
+timestamp = models.DateTimeField(auto_now_add=True)
+
+
+{{ object.timestamp | timesince }} ago -> timesince is the filter here
+=====================
+
+For Llop and Counter Cycle
