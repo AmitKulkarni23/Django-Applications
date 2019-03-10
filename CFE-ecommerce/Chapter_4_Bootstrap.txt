@@ -1,0 +1,22 @@
+Bootstrap Framework
+
+- Mobile first framework
+
+
+=============
+
+Adding Bootstrap
+
+=============
+
+Container v/s Conatiner-Fluid
+
+How bootstap stuff works?
+- By default you put everything in a class called as container
+
+container -> allows us to orgainze our content
+
+container -> becomes full width when it becomes a mobile device / when you reduce the size of your browser
+container-fluid -> Full width
+
+

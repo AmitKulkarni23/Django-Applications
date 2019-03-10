@@ -93,6 +93,38 @@ timestamp = models.DateTimeField(auto_now_add=True)
 
 
 {{ object.timestamp | timesince }} ago -> timesince is the filter here
+
 =====================
 
-For Llop and Counter Cycle
+For Loop and Counter Cycle
+
+{% cycle %} can be used in conjuction with the for loop
+
+{{ forloop.counter }}
+
+{%  if  forloop.counter|divisibleby:2%}
+
+
+Example:
+<div class="container">
+        <div class="row">
+            {% for object in object_list %}
+            <div class="col">
+                {% include "products/snippets/card.html" with instance=object%}
+                {% if forloop.counter|divisibleby:2 %}
+                    </div> </div> <div class="row"> <div class="col-lg-12"><hr/></div>
+                {% else %}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+    </div>
+	
+The first </div> in the if condition closes the "col" tag
+The second </div> closes the "row" tag
+A new "row" tag is created.
+The <hr/> tag is just to create a line
+
+=====================
+
