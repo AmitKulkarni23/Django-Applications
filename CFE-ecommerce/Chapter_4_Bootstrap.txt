@@ -20,3 +20,88 @@ container -> becomes full width when it becomes a mobile device / when you reduc
 container-fluid -> Full width
 
 
+=============
+
+Rows and Columns
+
+Websites -> Scrolling usually up and down
+Therefore, fix the number of columns
+
+Bootstrap -> already 12 columns
+
+
+If <div class="col-12"> -> No matter what it will take up the entire row
+If <div class="col-1"> -> No matter what it will take up the (1/12)th of the row
+
+
+=============
+
+Column Sizing
+
+Each column widths
+
+<div class="col-4">
+	<div class="alert alert-primary" role="alert">
+	  A simple primary alert—check it out!
+	</div>
+</div>
+<div class="col-8">
+	<div class="alert alert-primary" role="alert">
+	  A simple primary alert—check it out!
+	</div>
+</div>
+
+<div class="row" no-gutters> -> Will remove the padding
+
+=============
+
+Offsets and Ordering
+
+ml-auto -> Margin left auto
+ml-right -> Margin right auto
+
+order-12
+order-1
+
+order -> Changes the way columns are ordered
+
+
+Example:
+<div class="row">
+<div class="col-2 mr-auto order-12" style='min-height:800px';>
+	<div class="alert alert-primary" role="alert" style='min-height:800px';>
+		First Item
+	</div>
+</div>
+<div class="col-8 ml-auto order-6" style='min-height:800px;'>
+	<div class="alert alert-secondary" role="alert" style='min-height:800px;'>
+	  Second Item
+	</div>
+</div>
+<div class="col-2 mr-auto order-1" style='min-height:800px;'>
+	<div class="alert alert-primary" role="alert" style='min-height:800px;'>
+		Last Item
+	</div>
+</div>
+</div>
+
+=============
+
+
+Designing for different browser sizes with breakpoints
+
+Breakpoints -> Size of the browser
+
+Smallest size -> The smallest size after the next smallest size
+col-sm-2 -> is a breakpoint
+
+col-sm-12 col-md-6 col-lg-4
+
+col-auto changes the width of the coulumn based on the content
+
+
+Container-Fluid can't be nested
+
+=============
+
+
