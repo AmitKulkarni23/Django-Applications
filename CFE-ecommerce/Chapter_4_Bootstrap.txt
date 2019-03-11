@@ -104,4 +104,24 @@ Container-Fluid can't be nested
 
 =============
 
+Spacing with margin and padding
 
+
+Bootstrap has something called as Spacing
+Eg: ml-auto -> Spacing handles this
+
+<div class="alert alert-secondary py-4" role="alert">
+  Navigation
+</div>
+
+
+ 
+<div class="row mb-3 bg-light">
+	<div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto">
+		<input type="text" placeholder="Search" class="form-control">
+	</div>
+</div>
+
+=============
+
+Navbar
