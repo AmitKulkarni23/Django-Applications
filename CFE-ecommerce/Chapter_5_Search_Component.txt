@@ -1,0 +1,16 @@
+Search Component
+
+======================
+
+A Basic Search View
+
+View -> in case of Django is the Controller
+View - handles the business logic
+
+http://127.0.0.1:8000/search/?q=title -> is a GET parameter
+
+def get_queryset(self, *args, **kwargs):
+	query = self.request.GET.get("q")
+	if query:
+		return Product.objects.filter(title__icontains=query)
+	Product.objects.none()

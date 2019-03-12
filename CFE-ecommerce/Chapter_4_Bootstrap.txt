@@ -125,3 +125,7 @@ Eg: ml-auto -> Spacing handles this
 =============
 
 Navbar
+
+=============
+
+Integrate into eCommerce project
