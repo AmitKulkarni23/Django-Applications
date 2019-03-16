@@ -5,5 +5,5 @@ from .views import (
 
 app_name = "products"
 urlpatterns = [
-    path(r"", SearchProductView.as_view(), name="list"),
+    path(r"", SearchProductView.as_view(), name="query"),
 ]

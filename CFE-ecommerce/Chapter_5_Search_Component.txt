@@ -14,3 +14,47 @@ def get_queryset(self, *args, **kwargs):
 	if query:
 		return Product.objects.filter(title__icontains=query)
 	Product.objects.none()
+	
+======================
+
+Display the query to the user
+
+Note that we did not pass q via "context".
+
+In the template we just said {{ request.GET.q }}
+This is in the settings
+template.context_processors.request
+
+
+
+======================
+
+Creating a Search Form -> Standalone search form that can be used over and over again
+
+Input Group for the search form
+
+search-form.html
+
+<form method="GET" action="{% url 'search:query' %}" class="form ml-auto">
+    <div class="input-group">
+        <input class="form-control" type="search" placeholder="Search" name="q" aria-label="Search" value="{{ request.GET.q }}">
+        <span class="input-group-btn">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </span>
+    </div>
+</form>
+
+Note : name="q" -> This will put the '?q=' in teh URL -> which will be queried for
+
+
+value = "{{ request.GET.q }}" -> so that the search value is persistent once it is searched for
+Default method on a form is GET
+action -> Where do you want this url going to?
+
+
+Side note:
+In method="POST" if you don't put in any action it will go to the current page
+
+======================
+
+Better lookups with Q
