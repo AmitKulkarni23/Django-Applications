@@ -58,3 +58,14 @@ In method="POST" if you don't put in any action it will go to the current page
 ======================
 
 Better lookups with Q
+
+
+from django.db.models import Q
+
+-> improve the querying Product.objects.filter(title__icontains=query)
+
+lookups = Q(title__icontains=query) | Q(description__icontains=query)
+	return Product.objects.filter(lookups).distinct() -> removes redundant lookups if they exist
+
+
+

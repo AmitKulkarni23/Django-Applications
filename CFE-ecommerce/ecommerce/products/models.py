@@ -2,6 +2,7 @@ from django.db import models
 import random
 import os
 from django.urls import reverse
+from django.db.models import Q
 
 
 def get_filename_extension(filepath):
@@ -32,6 +33,18 @@ def upload_image_path(instance, filename):
     return f"products/{new_file_name}/{final_filename}"
 
 
+class ProductQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+    def featured(self):
+        return self.filter(featured=True, active=True)
+
+    def search(self, query):
+        lookups = Q(title__icontains=query) | Q(description__icontains=query)
+        return self.filter(lookups).distinct()
+
+
 class ProductManager(models.Manager):
     def get_by_id(self, id):
         qs = self.get_queryset().filter(id=id)
@@ -39,8 +52,14 @@ class ProductManager(models.Manager):
             return qs.first()
         return None
 
+    def get_queryset(self):
+        return ProductQuerySet(self.model, self._db)
+
     def featured(self):
         return self.filter(featured=True)
+
+    def search(self, query):
+        return self.get_queryset().active().search(query)
 
 
 # Create your models here.
@@ -66,7 +85,8 @@ class Product(models.Model):
     # this field will be set for us automatically
     timestamp = models.DateTimeField(auto_now_add=True)
 
-
+    # Adding whether a filed is active or not
+    active = models.BooleanField(default=True)
     # Extending your custom model manager
     objects = ProductManager()
 
