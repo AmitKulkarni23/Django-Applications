@@ -1,0 +1,58 @@
+Cart Component
+
+========================
+
+Cart App
+
+-> Will be handling all of the shopping carts for authenticated and non-authenticated users
+
+
+
+========================
+
+Django Sessions
+
+Whether you are a logged in user or not when you select
+certain products and add them to cart they should be persistent
+
+django.contrib.sessions 
+
+When you go to a website it starts a session
+That session expires when the developer says that it expires
+
+Session -> remember things done in a session
+
+Can be used for a user name
+
+Sessions -> based off of your dB.
+Sessions are stored in your dB
+
+
+request.session -> SessionStore
+
+request.session.set_expiry
+
+request.session.session_key
+
+
+We will be playing around with setting and getting session variables
+request.session["first_name"] = "Amit"
+
+In home_view
+print(request.session.get("first_name")
+
+Therefore, request.session -> is a dictionary
+
+
+request.user["user"] = request.user
+-> Error: AnonymousUser is not JSON serializable
+
+You can't save actual objects to a session
+
+string, integer
+
+========================
+
+
+
+Cart Model

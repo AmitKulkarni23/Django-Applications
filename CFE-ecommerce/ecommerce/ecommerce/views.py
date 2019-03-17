@@ -5,8 +5,9 @@ from django.contrib.auth import authenticate, login, get_user_model
 
 
 def home_page(request):
+    # print(request.session.get("first_name", "Unknown"))
     context = {
-        "title" : "Hello World!"
+        "title": "Hello World!"
     }
     if request.user.is_authenticated:
         context["premium_content"] = "YEAAAAHH PREMIUM USER"

@@ -19,6 +19,8 @@ from .views import home_page, about_page, contact_page, login_page, register_pag
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from carts.views import cart_home
+
 
 urlpatterns = [
     path(r"", home_page, name="home"),
@@ -29,7 +31,9 @@ urlpatterns = [
     path("bootstrap", TemplateView.as_view(template_name="bootstrap/example.html")),
     path("products/", include("products.urls", namespace="products")),
     path("search/", include("search.urls", namespace="search")),
+    path(r"cart/", cart_home, name="cart"),
     path('admin/', admin.site.urls),
+
 ]
 
 if settings.DEBUG:
