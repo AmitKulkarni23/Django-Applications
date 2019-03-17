@@ -3,7 +3,8 @@ from django.http import Http404
 from django.views.generic import ListView, DetailView
 from .models import Product
 from .utils import unique_slug_generator
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save
+from carts.models import Cart
 
 
 class ProductListView(ListView):
@@ -144,6 +145,19 @@ class ProductDetailSlugView(DetailView):
     """
     queryset = Product.objects.all()
     template_name = "products/detail.html"
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        """
+        This is a method that is provided by Django.Every single class based view has this context
+        :param object_list:
+        :param kwargs:
+        :return:
+        """
+        context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context["cart"] = cart_obj
+
+        return context
 
     def get_object(self, *args, **kwargs):
         slug = self.kwargs.get("slug")

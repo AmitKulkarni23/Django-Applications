@@ -30,8 +30,8 @@ urlpatterns = [
     path(r"register/", register_page, name="register"),
     path("bootstrap", TemplateView.as_view(template_name="bootstrap/example.html")),
     path("products/", include("products.urls", namespace="products")),
+    path("cart/", include("carts.urls", namespace="carts")),
     path("search/", include("search.urls", namespace="search")),
-    path(r"cart/", cart_home, name="cart"),
     path('admin/', admin.site.urls),
 
 ]

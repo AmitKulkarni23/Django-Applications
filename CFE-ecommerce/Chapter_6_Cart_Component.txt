@@ -140,3 +140,24 @@ post_remove
 
 We want to caclulate the total in the Cart on some particular actions(not required for all actions)
 
+
+def pre_save_cart_receiver(sender, instance, action,  *args, **kwargs):
+    print(action)
+    if action == "post_add" or action == "post_remove" or action == "post_clear":
+        products = instance.products.all()
+        total = 0
+        for item in products:
+            total += item.price
+
+        instance.total = total
+        instance.save()
+
+
+m2m_changed.connect(pre_save_cart_receiver, sender=Cart.products.through)
+
+========================
+
+Cart Update View
+
+- update cart using the frontend -> add / remove products
+

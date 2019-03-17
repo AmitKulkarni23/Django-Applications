@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import Cart
+from products.models import Product
+from django.shortcuts import redirect
 
 
 def cart_create(user=None):
@@ -10,25 +12,30 @@ def cart_create(user=None):
 
 # Create your views here.
 def cart_home(request):
-    # # We dont want to create a cart if it already exists
-    # cart_id = request.session.get("cart_id", None)
-    #
-    # qs = Cart.objects.filter(id=cart_id)
-    # if qs.count() == 1:
-    #     print("Cart exists")
-    #     cart_obj = qs.first()
-    #     if request.user.is_authenticated and cart_obj.user is None:
-    #         cart_obj.user = request.user
-    #         cart_obj.save()
-    # else:
-    #     print("Create a new cart")
-    #     cart_obj = Cart.objects.new(user=request.user)
-    #     request.session["cart_id"] = cart_obj.id
+    context = {}
+    cart_obj, new_obj = Cart.objects.new_or_get(request)
+    context["cart"] = cart_obj
+    return render(request, "carts/home.html", context)
 
-    cart_obj = Cart.objects.new_or_get(request)
 
-    # key = request.session.session_key
+def cart_update(request):
+    print(request.POST)
+    product_id = request.POST.get("product_id")
+    if product_id is not None:
+        try:
+            product_obj = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            print("Show message to user. Product is gone")
+            return redirect("carts:home")
 
-    # Expire the session key after 300 seconds
-    # request.session.set_expiry(300)
-    return render(request, "carts/home.html", {})
+        cart_obj, new_obj = Cart.objects.new_or_get(request)
+
+        if product_obj in cart_obj.products.all():
+            # Remove a product
+            cart_obj.products.remove(product_obj)
+        else:
+            # Add a product
+            cart_obj.products.add(product_obj)  # or cart_obj.products.add(product_id)
+
+    return redirect("carts:home")
+
