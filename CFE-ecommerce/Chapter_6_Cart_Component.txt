@@ -161,3 +161,25 @@ Cart Update View
 
 - update cart using the frontend -> add / remove products
 
+========================
+
+Add to Cart form
+
+- Add to Cart button -> should toggle
+- 1 click add to Cart -> toggle to -> Remove
+
+Add to Cart form -> Inside of Products
+
+csrf -> Cross site request forgery.
+True for POST method
+
+POST -> changing stuff in database
+
+========================
+
+Remove Items from Cart Form
+
+========================
+
+Cart Icon & Font Awesome
+
