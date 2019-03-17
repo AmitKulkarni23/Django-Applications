@@ -111,3 +111,32 @@ def cart_home(request):
 Model Manager for Cart
 
 
+class CartManager(models.Manager):
+    def new(self, user=None):
+        user_obj = None
+        if user is not None:
+            if user.is_authenticated:
+                user_obj = user
+        return self.model.objects.create(user=user_obj)
+		
+		
+========================
+
+M2M Changed Signal to calculate Cart total
+
+pre_save.connect method will be called when the user hits save in the admin panel
+
+m2m_changed -> manyToManyChanged
+
+pre_save_cart_receiver(sender, instance, action,  *args, **kwargs) -> This is the signature
+
+Actions:
+
+pre_add
+post_add
+pre_remove
+post_remove
+
+
+We want to caclulate the total in the Cart on some particular actions(not required for all actions)
+
