@@ -10,8 +10,6 @@ def cart_create(user=None):
 
 # Create your views here.
 def cart_home(request):
-
-    request.session["cart_id"] = "12"
     # We dont want to create a cart if it already exists
     cart_id = request.session.get("cart_id", None)
 
@@ -19,11 +17,13 @@ def cart_home(request):
     if qs.count() == 1:
         print("Cart exists")
         cart_obj = qs.first()
+        if request.user.is_authenticated and cart_obj.user is None:
+            cart_obj.user = request.user
+            cart_obj.save()
     else:
         print("Create a new cart")
-        cart_obj = cart_create()
+        cart_obj = Cart.objects.new(user=request.user)
         request.session["cart_id"] = cart_obj.id
-
 
     # key = request.session.session_key
 
