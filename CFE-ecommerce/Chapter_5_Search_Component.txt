@@ -68,4 +68,58 @@ lookups = Q(title__icontains=query) | Q(description__icontains=query)
 	return Product.objects.filter(lookups).distinct() -> removes redundant lookups if they exist
 
 
+======================
 
+Tag Component
+
+Adding and Querying tag components
+
+Compensate for searches like "t-shirt", "t shirt", "tshirt"
+
+Modify the model
+-> Create a completely different model
+
+python manage.py startapp tags
+
+tags -> models.py
+	
+
+We created a new model for tags
+# Create your models here.
+class Tag(models.Model):
+    title = models.CharField(max_length=120)
+    slug = models.SlugField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+But there is no relationship between the tag/models.py and the product/models.py
+		
+Using foreign key
+
+products = models.ManyToManyField(Product, blank=True)
+
+======================
+
+Shell commands for brief intro to Foreign Keys
+
+- Get all the products related to a tag
+- Get all the tags related to a product
+
+i.e. many to many relationship
+
+from products.models import Product
+
+query_set = Product.objects.all()
+
+first = query_set.first()
+
+first.tag_set
+
+
+======================
+
+Search By Related Model
+ 
