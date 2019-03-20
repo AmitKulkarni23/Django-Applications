@@ -49,3 +49,24 @@ cart = models.ForeignKey(Cart)
 ========================
 
 Generate the order ID
+
+
+Order ID -> Random, Unique ( has to be, is a must)
+
+
+def pre_save_create_order_id(sender, instance, *args, **kwargs):
+    if not instance.order_id:
+        instance.order_id = unique_order_id_generator(instance)
+
+
+pre_save.connect(pre_save_create_order_id, sender=Order)
+
+
+========================
+
+Calculate the order total
+
+How?
+- Based off of Cart
+- When the cart changes the order changes
+- When the cart has been updated, our order should change
