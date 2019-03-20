@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import Http404
 from django.views.generic import ListView, DetailView
 from .models import Product
-from .utils import unique_slug_generator
+from ecommerce.utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from carts.models import Cart
 
