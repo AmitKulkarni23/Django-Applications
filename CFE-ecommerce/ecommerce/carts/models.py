@@ -66,7 +66,7 @@ def m2m_changed_cart_receiver(sender, instance, action,  *args, **kwargs):
 
 def pre_save_cart_receiver(sender, instance, *args, **kwargs):
     if instance.sub_total > 0:
-        instance.total = instance.sub_total + 10
+        instance.total = float(instance.sub_total) * 1.09
     else:
         instance.total = 0.0
 

@@ -4,6 +4,7 @@ from django.db import models
 from carts.models import Cart
 from ecommerce.utils import unique_order_id_generator
 from django.db.models.signals import pre_save, post_save
+import math
 
 
 # (db _stored_value, display_value)
@@ -37,7 +38,7 @@ class Order(models.Model):
     def update_total(self):
         cart_total = self.cart.total
         shipping_total = self.shipping_total
-        new_total = decimal.Decimal(cart_total) + decimal.Decimal(shipping_total)
+        new_total = format(math.fsum([cart_total, shipping_total]), ".2f")
 
         self.total = new_total
         self.save()
