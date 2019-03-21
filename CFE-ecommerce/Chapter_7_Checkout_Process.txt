@@ -90,3 +90,23 @@ get_or_create() -> is a method built-in
 ========================
 
 Math with Decimals and Floats in Python
+
+
+========================
+
+Upgrading Auth to prep for Checkout
+
+python manage.py startapp accounts -> All our logging and registering of the users will be handled here
+
+On checkout page:
+	-> If user successfully logs in / successfully registers -> redirect back to checkout page
+	
+Way 1)
+Get the redirect URL
+next_ = request.GET.get("next")
+next_post = request.POST.get("next")
+
+from django.utils.http import is_safe_url
+
+
+========================
