@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 from carts.models import Cart
 from ecommerce.utils import unique_order_id_generator
@@ -33,12 +35,9 @@ class Order(models.Model):
 
     # helper function
     def update_total(self):
-        print("Calling update total")
         cart_total = self.cart.total
-        print("CART_TOTAL = ", cart_total)
         shipping_total = self.shipping_total
-
-        new_total = cart_total + shipping_total
+        new_total = decimal.Decimal(cart_total) + decimal.Decimal(shipping_total)
 
         self.total = new_total
         self.save()
@@ -55,18 +54,14 @@ pre_save.connect(pre_save_create_order_id, sender=Order)
 
 
 def post_save_cart_total(sender, instance, created, *args, **kwargs):
-    print("FROM CART TOTAL", created)
     if not created:
         # Just to avoid confusion
         cart_obj = instance
 
         cart_id = cart_obj.id
-        print("The cart id is ", cart_id)
-
         qs = Order.objects.filter(cart__id=cart_id)
 
         if qs.count() == 1:
-            print("Into the if loop")
             order_obj = qs.first()
             order_obj.update_total()
 

@@ -70,3 +70,23 @@ How?
 - Based off of Cart
 - When the cart changes the order changes
 - When the cart has been updated, our order should change
+
+
+- USE THE POST_SAVE function
+
+========================
+
+Checkout View
+
+- Checkout Button in our view
+
+We will put the view in the "carts" app not the "order"
+
+
+order_obj, new_order_obj = Order.objects.get_or_create() 
+get_or_create() -> is a method built-in
+
+
+========================
+
+Math with Decimals and Floats in Python

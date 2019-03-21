@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Cart
 from products.models import Product
 from django.shortcuts import redirect
+from orders.models import Order
 
 
 def cart_create(user=None):
@@ -38,4 +39,19 @@ def cart_update(request):
             cart_obj.products.add(product_obj)  # or cart_obj.products.add(product_id)
         request.session["cart_items"] = cart_obj.products.count()
     return redirect("carts:home")
+
+
+def checkout_home(request):
+    cart_obj, cart_created = Cart.objects.new_or_get(request)
+    order_obj = None
+
+    if cart_created or cart_obj.products.count() == 0:
+        # Means that the cart is created in this view
+        # Cart initially did not exist
+        # We want cart to handle this
+        # We also want to ensure that there are no products in the cart
+        return redirect("carts:home")
+    else:
+        order_obj, new_order_obj = Order.objects.get_or_create(cart=cart_obj)
+    return render(request, "carts/checkout.html", {"object" : order_obj})
 
