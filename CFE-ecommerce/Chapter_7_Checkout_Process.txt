@@ -110,3 +110,96 @@ from django.utils.http import is_safe_url
 
 
 ========================
+
+
+Billing Profile
+
+- Asscoiated with a guest user / authenticated user
+- 1 uniform thing
+
+- New app billing
+- App -> 1 thing and 1 thing well
+
+Billing Profile and Transactions
+
+
+Ok, how does a signal work?
+
+def user_created_receiver(sender, instance, created, *args, **kwargs):
+    # Whenever a user is created a billing profile is created through this signal
+    if created:
+        BillingProfile.objects.get_or_create(user=instance)
+
+
+post_save.connect(user_created_receiver, sender=User)
+
+
+User = settings.AUTH_USER_MODEL
+
+Django emits signals when something is change in the database
+So we are listening when a "User" is saved to the database(sender=User)
+
+We have a receiver ready, which checks if the "User" instance is created
+if created:
+	# Create a billing profile for that instance of the user
+	
+========================
+
+Billing profile in Checkout View
+
+- Implementing billing profile for logged-in user or a guest user
+
+
+In checkout.html
+
+{% include "accounts/snippets/form.html" with form=login_form next=request.build_absolute_uri%}{% extends "base.html" %}
+
+{% block content %}
+{% if not billing_profile %}
+    <div class="row text-center">
+        <div class="col-12 col-md-6">
+            <p class="lead">Login</p>
+            {% include "accounts/snippets/form.html" with form=login_form next_url=request.build_absolute_uri%}
+        </div>
+        <div class="col-12 col-md-6">
+            <p class="lead">Continue As Guest</p>
+        </div>
+    </div>
+{% else %}
+    <h1>Checkout</h1>
+    <p>Cart Total {{ object.cart.total }}</p>Login
+    <p>Shipping Total {{ object.shipping_total }}</p>
+    <p>Total {{ object.total }}</p>
+{% endif %}
+{% endblock %}
+
+
+
+def checkout_home(request):
+    cart_obj, cart_created = Cart.objects.new_or_get(request)
+    order_obj = None
+
+    if cart_created or cart_obj.products.count() == 0:
+        # Means that the cart is created in this view
+        # Cart initially did not exist
+        # We want cart to handle this
+        # We also want to ensure that there are no products in the cart
+        return redirect("carts:home")
+    else:
+        order_obj, new_order_obj = Order.objects.get_or_create(cart=cart_obj)
+
+    billing_profile = None
+    login_form = LoginForm()
+
+    user = request.user
+    if user.is_authenticated:
+        billing_profile, billing_profile_created = BillingProfile.objects.get_or_create(user=user, email=user.email)
+
+    context = {"object": order_obj, "billing_profile": billing_profile, "login_form": login_form}
+    return render(request, "carts/checkout.html", context)
+
+========================
+
+Billing Profile for a guest user
+
+
