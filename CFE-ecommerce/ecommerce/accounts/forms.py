@@ -4,6 +4,12 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+# The form for a guest user
+class GuestForm(forms.Form):
+    # We just need an email field from a guest user
+    email = forms.EmailField()
+
+
 class LoginForm(forms.Form):
     """
     Class based form for user to log-in into
