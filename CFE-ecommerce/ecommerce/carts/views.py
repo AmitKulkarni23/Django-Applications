@@ -72,21 +72,7 @@ def checkout_home(request):
         pass
 
     if billing_profile is not None:
-        # If there is any order on this cart and is active, we will make such an order being inactive now
-        order_qs = Order.objects.filter(billing_profile=billing_profile, cart=cart_obj, active=True)
-        if order_qs.count() == 1:
-            order_obj = order_qs.first()
-        else:
-            # Doesn't exist
-            # Create the order
-
-            # Get rid of old ones
-            # Get everything except teh one with this billing profile
-            old_order_qs = Order.objects.exclude(billing_profile=billing_profile).filter(cart=cart_obj, active=True)
-
-            if old_order_qs.exists():
-                old_order_qs.update(active=False)
-            order_obj = Order.objects.create(billing_profile=billing_profile, cart=cart_obj)
+        order_obj, order_ob_created = Order.objects.new_or_get(billing_profile, cart_obj)
 
     context = {"object": order_obj,
                "billing_profile": billing_profile,

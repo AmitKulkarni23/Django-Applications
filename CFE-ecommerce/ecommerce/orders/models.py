@@ -17,6 +17,29 @@ ORDER_STATUS_CHOICES = (
 )
 
 
+class OrderManager(models.Manager):
+
+    def new_or_get(self, billing_profile, cart_obj):
+        # If there is any order on this cart and is active, we will make such an order being inactive now
+        created = False
+        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True)
+        if qs.count() == 1:
+            obj = qs.first()
+        else:
+            # Doesn't exist
+            # Create the order
+
+            # Get rid of old ones
+            # Get everything except teh one with this billing profile
+            # old_order_qs = Order.objects.exclude(billing_profile=billing_profile).filter(cart=cart_obj, active=True)
+            #
+            # if old_order_qs.exists():
+            #     old_order_qs.update(active=False)
+            obj = self.model.objects.create(billing_profile=billing_profile, cart=cart_obj)
+            created = True
+        return obj, created
+
+
 # Create your models here.
 class Order(models.Model):
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE, null=True, blank=True)
@@ -37,6 +60,8 @@ class Order(models.Model):
     def __str__(self):
         return self.order_id
 
+    objects = OrderManager()
+
     # helper function
     def update_total(self):
         cart_total = self.cart.total
@@ -52,6 +77,9 @@ class Order(models.Model):
 def pre_save_create_order_id(sender, instance, *args, **kwargs):
     if not instance.order_id:
         instance.order_id = unique_order_id_generator(instance)
+    qs = Order.objects.filter(cart=instance.cart).exclude(billing_profile=instance.billing_profile)
+    if qs.exists():
+        qs.update(active=False)
 
 
 pre_save.connect(pre_save_create_order_id, sender=Order)
@@ -79,6 +107,7 @@ def post_save_order(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(post_save_order, sender=Order)
+
 
 # Generate the order_id
 # Generate the order total
