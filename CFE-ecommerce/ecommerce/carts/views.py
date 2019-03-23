@@ -10,7 +10,6 @@ from accounts.models import GuestEmail
 
 
 def cart_create(user=None):
-    print("New cart created")
     cart_obj = Cart.objects.create(user=None)
     return cart_obj
 
@@ -68,15 +67,16 @@ def checkout_home(request):
     if user.is_authenticated:
         billing_profile, billing_profile_created = BillingProfile.objects.get_or_create(user=user, email=user.email)
     elif guest_email_id is not None:
-        guest_email_obj = GuestEmail.objects.get(guest_email_id)
+        guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
         billing_profile, billing_guest_profile_created = BillingProfile.objects.get_or_create(email=guest_email_obj.email)
+
     else:
         pass
 
     context = {"object": order_obj,
                "billing_profile": billing_profile,
                "login_form": login_form,
-               "guest_form" : guest_form
+               "guest_form": guest_form
                }
     return render(request, "carts/checkout.html", context)
 

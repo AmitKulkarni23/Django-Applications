@@ -200,6 +200,7 @@ def checkout_home(request):
 
 ========================
 
-Billing Profile for a guest user
+Billing Profile for a Guest user
+
 
 

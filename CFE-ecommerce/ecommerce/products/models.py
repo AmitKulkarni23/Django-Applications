@@ -25,8 +25,6 @@ def upload_image_path(instance, filename):
     :param filename:
     :return: Chnage the uploaded filename to a random integer
     """
-    print(instance)
-    print(filename)
     new_file_name = random.randint(1, 31920002)
     name, ext = get_filename_extension(filename)
     final_filename = "{new_file_name}{ext}".format(new_file_name=new_file_name, ext=ext)

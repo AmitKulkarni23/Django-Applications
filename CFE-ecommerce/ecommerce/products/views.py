@@ -18,7 +18,6 @@ class ProductListView(ListView):
         :return:
         """
         context = super(ProductListView, self).get_context_data(*args, **kwargs)
-        print(context)
         return context
 
 
@@ -52,7 +51,6 @@ class ProductDetailView(DetailView):
         :return:
         """
         context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
-        print(context)
         return context
 
     def get_object(self, *args, **kwargs):
