@@ -8,7 +8,6 @@ from .models import GuestEmail
 
 
 def guest_register_view(request):
-    print("Is it coming here??")
     form = GuestForm(request.POST or None)
     context = {
         "form": form
@@ -48,17 +47,15 @@ def login_page(request):
             # Login the user
             login(request, user)
 
+            try:
+                del request.session["guest_email_id"]
+            except:
+                pass
+
             if is_safe_url(redirect_path, request.get_host()):
                 return redirect(redirect_path)
             else:
                 return redirect("/")
-
-            # Create a new instance of the form
-            # That is clearing the form
-            context["form"] = LoginForm()
-
-            # Redirect to teh login page again( success page )
-            return redirect("/login")
         else:
             print("Error")
     return render(request, "accounts/login.html", context)

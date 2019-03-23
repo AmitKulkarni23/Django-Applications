@@ -54,8 +54,6 @@ def checkout_home(request):
         # We want cart to handle this
         # We also want to ensure that there are no products in the cart
         return redirect("carts:home")
-    else:
-        order_obj, new_order_obj = Order.objects.get_or_create(cart=cart_obj)
 
     billing_profile = None
     login_form = LoginForm()
@@ -72,6 +70,23 @@ def checkout_home(request):
 
     else:
         pass
+
+    if billing_profile is not None:
+        # If there is any order on this cart and is active, we will make such an order being inactive now
+        order_qs = Order.objects.filter(billing_profile=billing_profile, cart=cart_obj, active=True)
+        if order_qs.count() == 1:
+            order_obj = order_qs.first()
+        else:
+            # Doesn't exist
+            # Create the order
+
+            # Get rid of old ones
+            # Get everything except teh one with this billing profile
+            old_order_qs = Order.objects.exclude(billing_profile=billing_profile).filter(cart=cart_obj, active=True)
+
+            if old_order_qs.exists():
+                old_order_qs.update(active=False)
+            order_obj = Order.objects.create(billing_profile=billing_profile, cart=cart_obj)
 
     context = {"object": order_obj,
                "billing_profile": billing_profile,
