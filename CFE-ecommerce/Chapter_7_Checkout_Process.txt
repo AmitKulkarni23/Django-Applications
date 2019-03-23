@@ -202,5 +202,23 @@ def checkout_home(request):
 
 Billing Profile for a Guest user
 
+========================
+
+Associate billing profile to a order
+
+- adjust how our order is being created and calculated based on our billing profile
+
+GNENERAL IDEA:
+
+WE HAVE OUR CART, WE SHOULD CREATE AN ORDER FOR THAT CART UNTIL WE HAVE A BILLING PROFILE
+
+1) Update order based off of billing profile and cart
 
 
+2) Get rid of guest email ID if you login
+	            try:
+					del request.session["guest_email_id"]
+				except:
+					pass
+
+========================
