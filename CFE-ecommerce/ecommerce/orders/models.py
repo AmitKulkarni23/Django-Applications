@@ -6,7 +6,7 @@ from ecommerce.utils import unique_order_id_generator
 from django.db.models.signals import pre_save, post_save
 import math
 from billing.models import BillingProfile
-
+from adresses.models import Address
 
 # (db _stored_value, display_value)
 ORDER_STATUS_CHOICES = (
@@ -43,8 +43,10 @@ class OrderManager(models.Manager):
 # Create your models here.
 class Order(models.Model):
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE, null=True, blank=True)
-    # shipping_address = ?
-    # billing_address = ?
+    shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True,
+                                         blank=True, related_name="shipping_address")
+    billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True,
+                                        blank=True, related_name="billing_address")
 
     # Assign a random of strings / numbers which represents this order to the customer
     # pk / id

@@ -282,3 +282,23 @@ instance.save()
 
 This means that you are actually creating the instance by taking all the data form the model form
 
+Once you save the shipping address -> You need to add it to the order
+
+Associate Order to the Shipping address
+
+
+========================
+
+Associate Orders to Addresses
+
+shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+billing_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+
+
+If we do a python manage.py makemigrations, it gives an error
+
+It is because, there are 2 foreign keys with teh smae assocaition
+Database error
+
+Add something called as "related_name"
+========================
