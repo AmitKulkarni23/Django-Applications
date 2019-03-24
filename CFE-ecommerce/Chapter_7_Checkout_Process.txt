@@ -318,8 +318,12 @@ Finalize Checkout
 
 You want to REUSE addresses while checking out
 
+Select an address and use that one instead of having to type one in
 
 
 
 ========================
+
+
+Checkout Success:
 
