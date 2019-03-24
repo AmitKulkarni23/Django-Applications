@@ -65,7 +65,11 @@ def checkout_home(request):
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
 
+    # Reuse addresses
+    address_qs = None
     if billing_profile is not None:
+        if request.user.is_authenticated:
+            address_qs = Address.objects.filter(billing_profile=billing_profile)
         order_obj, order_ob_created = Order.objects.new_or_get(billing_profile, cart_obj)
 
         if shipping_address_id:
@@ -104,6 +108,7 @@ def checkout_home(request):
                "login_form": login_form,
                "guest_form": guest_form,
                "address_form": shipping_address_form,
+               "address_qs": address_qs,
                }
     return render(request, "carts/checkout.html", context)
 

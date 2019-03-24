@@ -302,3 +302,24 @@ Database error
 
 Add something called as "related_name"
 ========================
+
+Finalize Checkout
+
+
+"""
+	Steps to finalize Checkout
+	Update order_obj to be done, "paid"
+	del request.session["cart_id"]
+	redirect to success page 
+"""
+
+
+========================
+
+You want to REUSE addresses while checking out
+
+
+
+
+========================
+

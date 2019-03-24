@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from carts.views import cart_home
 from accounts.views import login_page, register_page, guest_register_view
 from django.contrib.auth.views import LogoutView
-from adresses.views import checkout_address_create_view
+from adresses.views import checkout_address_create_view, checkout_address_reuse_view
 
 
 urlpatterns = [
@@ -38,6 +38,7 @@ urlpatterns = [
     path("search/", include("search.urls", namespace="search")),
     path("register/guest/", guest_register_view, name="guest_register"),
     path("checkout/address/create", checkout_address_create_view, name="checkout_address_create"),
+    path("checkout/address/reuse", checkout_address_reuse_view, name="checkout_address_reuse"),
     path('admin/', admin.site.urls),
 
 ]
