@@ -225,9 +225,30 @@ WE HAVE OUR CART, WE SHOULD CREATE AN ORDER FOR THAT CART UNTIL WE HAVE A BILLIN
 
 Order Manager
 
-
-
-
-
-
 ========================
+
+Billing Profile Manager
+
+- Model manager
+========================
+
+
+Addresses app
+
+- Why is this in its own app?
+CRUD or Views for Addresses
+
+- Apps -> do 1 thing and 1 thing very well
+
+Address could live in the Order, Account, Billing model
+But a BillingProfile can't live in a Address model.
+
+
+Therefore, address is in its own app
+
+User address ->
+relation to User || Billing Profile -> either or
+
+To reduce complexity, related to Billign Profile
+
+When user registers for the 1st time, the address is registered to teh billing profile

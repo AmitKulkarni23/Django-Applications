@@ -1,11 +1,34 @@
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
+from accounts.models import GuestEmail
 
 
 # When a user is created we need to create a billing profile
 # Use Django signals
 User = settings.AUTH_USER_MODEL
+
+
+class BillingProfileManager(models.Manager):
+
+    def new_or_get(self, request):
+        user = request.user
+        guest_email_id = request.session.get("guest_email_id")
+        created = False
+        obj = None
+
+        user = request.user
+        if user.is_authenticated:
+            obj, created = self.model.objects.get_or_create(user=user, email=user.email)
+        elif guest_email_id is not None:
+            guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
+            obj, created = self.model.objects.get_or_create(
+                email=guest_email_obj.email)
+
+        else:
+            pass
+
+        return obj, created
 
 # abc@chainreaders.com -> Can have a 1000 billing profiles
 # But a registered user on our website user@chainreaders.com - should have
@@ -27,6 +50,8 @@ class BillingProfile(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     # Customer ID in Stripe or Braintree
+
+    objects = BillingProfileManager()
 
     def __str__(self):
         return self.email
