@@ -83,6 +83,22 @@ def checkout_home(request):
             # If we either have a shipping address or a billing address save the order
             order_obj.save()
 
+    if request.method == "POST":
+        # Some check that order is done
+        """
+            Steps to finalize Checkout
+            Update order_obj to be done, "paid"
+            del request.session["cart_id"]
+            redirect to success page 
+        """
+        is_done = order_obj.check_done()
+
+        if is_done:
+            order_obj.mark_paid()
+            del request.session["cart_id"]
+            request.session["cart_items"] = 0
+            return redirect("/cart/success")
+
     context = {"object": order_obj,
                "billing_profile": billing_profile,
                "login_form": login_form,
