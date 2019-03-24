@@ -252,3 +252,33 @@ relation to User || Billing Profile -> either or
 To reduce complexity, related to Billign Profile
 
 When user registers for the 1st time, the address is registered to teh billing profile
+
+
+- We have to create a form that handles these address
+- We have to display this form( Model Form )
+
+
+
+ModelForm -> will display a form similar to how a form is displayed by the admin
+
+from django import forms
+
+from .models import Address
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+		
+		
+========================
+
+Address app part 2
+
+In case of a model form, you could do something like
+
+instance = form.save(commit=False)
+instance.billing_profile = 
+instance.save()
+
+This means that you are actually creating the instance by taking all the data form the model form
+
