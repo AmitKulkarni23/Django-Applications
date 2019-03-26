@@ -11,7 +11,9 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <h1>No Hello, world!</h1>
+    <h1 id="header-1">No Hello, world!</h1>
+    <h1 id="header-2">Header 2</h1>
+    <h1 class="header-class">Header 3</h1>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -23,9 +25,13 @@
             // $(selector)
             // $('body').css('background-color', red)
             setTimeout(function () {
-                $('body').css('background-color', "red")
-            }, 5000) // in ms
+                $("#header-2").css('color', 'purple');
+                $("h1").text("Header 3");
+                $(".header-class").css("background-color", "green").css("padding", "30px");
+            }, 2000) // in ms
         })
+
+
     </script>
 
 

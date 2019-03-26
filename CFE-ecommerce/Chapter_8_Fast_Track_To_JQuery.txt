@@ -1,1 +1,28 @@
 Chapter_8_Fast_Track_To_JQuery
+
+python -m http.server -> Emulate a HTTP server
+
+Check if jquery is running
+$(document.ready(function () {
+  alert("Hello")
+}))
+
+===================
+
+A Basic Selector
+
+setTimeOut(function(){
+	
+}, 5000)
+
+===================
+
+$("h1").css('color', 'purple')
+$("h1").text("Hello Again")
+
+
+jQuery -> Allow us to add more functionality to our basic HTML
+
+
+
+===================
