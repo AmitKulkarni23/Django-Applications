@@ -120,3 +120,38 @@ var href = this.attr("href")
 ===================
 
 Handling Form Data in jQuery
+
+We need a backend to handle forms
+jQuery -> Frontend
+
+
+var contentForm = $(".new-content")
+
+contentForm.submit(function(event){
+	event.preventDefault();
+	console.log(contentForm.serialize())
+	
+	// If text area is present
+	var textarea = $(this).find('textarea')
+	
+	// Above: Hey this form element, find something called as textarea
+	console.log(textarea.val())
+	
+	
+	// If you want to set the text area content of some form
+	$(".someNewForm).text(textarea.val())
+	
+	// What if you want to formulate the data
+	var formMethod = $(this).attr("method")
+	var formAction = $(this).attr("action")
+	
+	
+	// Dictionary is an object
+	var data = {
+		"content" : textarea.val(),
+		"method" : formMethod,
+		"action" : formAction
+		
+	}
+	
+})

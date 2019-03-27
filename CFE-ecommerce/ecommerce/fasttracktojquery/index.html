@@ -17,11 +17,13 @@
       </style>
   </head>
   <body>
-    <form method="post" action="/some/url/link" class="new-content">
-        <textarea name="content">
-            <input type="submit" value="Save" />
-        </textarea>
-    </form>
+    <div class="container">
+        <form method="post" action="/some/url/link" class="new-content">
+            <textarea name="content"></textarea>
+            <input type="submit" value="Save" /><br/>
+        </form>
+    </div>
+
     <h1 id="header-1">No Hello, world!</h1>
     <h1 id="header-2">Header 2</h1>
     <h1 class="header-class">Header 3</h1>
@@ -37,7 +39,8 @@ Phasellus auctor volutpat ligula. Fusce lobortis ex nibh, nec maximus augue moll
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+
+        /*$(document).ready(function () {
             // Selectors
             // $(selector)
             // $('body').css('background-color', red)
@@ -53,7 +56,7 @@ Phasellus auctor volutpat ligula. Fusce lobortis ex nibh, nec maximus augue moll
                     eachItem.css("overflow-y", "scroll")
                 }
 
-            })
+            }) */
 
             var header2 = $("#header-2")
 
