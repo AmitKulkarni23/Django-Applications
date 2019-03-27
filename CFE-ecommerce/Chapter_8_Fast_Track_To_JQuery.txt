@@ -23,6 +23,100 @@ $("h1").text("Hello Again")
 
 jQuery -> Allow us to add more functionality to our basic HTML
 
+ID selector
+$("#header-2").css('color', 'purple');
+
+
+Class Selector
+$(".header-class").css("background-color", "green").css("padding", "30px")
 
 
 ===================
+
+Content Overflow Part 1
+
+var $description = $(".description");
+$description.css("height", "300px").css("width", "50px");
+
+
+
+var $description = $(".description");
+
+console.log($description.length); // 1 -> something exists -> Thsi actual selector exists on this page
+console.log($description.css("height"));
+
+===================
+
+Data Types, Iterations and Conditionals
+
+camelCase
+
+boolean data type
+var isFalse = false
+
+
+Looping through array
+
+$.each(someArray, function(index, obj){
+	
+})
+
+===================
+
+$(document).ready(function () {
+	var $description = $(".description");
+	$.each($description, function(index, obj){
+		var eachItem = $(this);
+		console.log(index, eachItem.height());
+	})
+})
+
+
+
+var $description = $(".description");
+	$.each($description, function(index, obj){
+		var eachItem = $(this);
+		console.log(eachItem);
+		var actualHeight = eachItem[0].scrollHeight;
+		var shouldBeHeight = eachItem.height();
+
+		if(actualHeight > shouldBeHeight){
+			eachItem.css("overflow-y", "scroll")
+		}
+})
+
+
+===================
+
+Click Events
+
+var header3 = $("#header-3")
+
+header3.click(function(event){
+	var $this = $(this)
+	console.log($this);
+	console.log(event);
+	
+	window.location.href = "http://www.google.com"
+})
+
+
+
+How to select a link
+var descriptionLink = $(".description a")
+
+descriptionLink.click(function(event){
+		// If you want to prevent teh default action on the link
+		event.preventDefault()
+		
+		// preventDefault is true for anything
+})
+
+How to get the "href" that the linking is pointing to via code
+var this = $(this)
+
+var href = this.attr("href")
+
+===================
+
+Handling Form Data in jQuery

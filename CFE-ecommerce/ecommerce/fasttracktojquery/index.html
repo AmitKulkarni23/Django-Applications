@@ -9,11 +9,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Hello, world!</title>
+      <style>
+          .description{
+              width: 300px;
+              height: 50px;
+          }
+      </style>
   </head>
   <body>
     <h1 id="header-1">No Hello, world!</h1>
     <h1 id="header-2">Header 2</h1>
     <h1 class="header-class">Header 3</h1>
+    <p class="description">Just a normal paragraph</p>
+    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat enim nec quam pulvinar, a pretium dui auctor. Integer ut venenatis ex. In imperdiet ex ac lorem tincidunt, id sodales odio commodo. Praesent pellentesque efficitur sapien, hendrerit venenatis nisl vulputate ut. Curabitur ut eleifend elit. Aenean nec purus vitae augue aliquet cursus id vitae dolor. Phasellus faucibus tortor justo, ac porta odio egestas aliquam. Ut sit amet lacus sapien. Nam blandit nisi vel metus egestas, id molestie quam pellentesque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer quis rhoncus nibh, sit amet posuere ante. Aliquam ipsum tortor, iaculis sit amet porta quis, ultricies quis nisi.
+
+Curabitur sit amet mauris arcu. Suspendisse scelerisque nulla at velit vehicula mattis. Nullam sagittis, purus nec bibendum vestibulum, urna tortor egestas dolor, quis hendrerit dolor dolor a quam. Suspendisse non purus urna. Cras non tempor felis. Vestibulum in nibh id turpis rhoncus porta ut commodo ipsum. In in mattis sapien.
+
+Phasellus auctor volutpat ligula. Fusce lobortis ex nibh, nec maximus augue mollis vitae. Suspendisse potenti. Cras et ex venenatis, blandit ligula quis, egestas turpis. Donec quis luctus velit, sed suscipit eros. Sed consectetur leo purus, sit amet bibendum sapien dapibus ac. Proin faucibus arcu ac diam volutpat, eget fringilla sem congue. Curabitur eget metus semper, luctus mi ac, euismod nunc. Donec ut ultricies libero. Vivamus turpis nibh, feugiat nec gravida pretium, finibus et massa. Pellentesque vel nisi nec tellus pharetra ultrices. Ut tincidunt sem eget sem maximus tincidunt. Aliquam erat volutpat. Nulla non interdum est.</p>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -24,36 +36,47 @@
             // Selectors
             // $(selector)
             // $('body').css('background-color', red)
+
+            var $description = $(".description");
+            $.each($description, function(index, obj){
+                var eachItem = $(this);
+                // console.log(eachItem);
+                var actualHeight = eachItem[0].scrollHeight;
+                var shouldBeHeight = eachItem.height();
+
+                if(actualHeight > shouldBeHeight){
+                    eachItem.css("overflow-y", "scroll")
+                }
+
+            })
+
+            var header2 = $("#header-2")
+
+            header2.click(function(event){
+                var $this = $(this);
+                console.log($this);
+                console.log(event);
+
+                window.location.href = "http://www.google.com"
+            })
+
+            /*console.log($description.length); // 1 -> something exists
+            console.log($description.css("height"));
+
+            console.log($description.height());
+
+            //if currentElement_height > buit-in height
+            // add $description.css("overflow", "scroll")
+
             setTimeout(function () {
                 $("#header-2").css('color', 'purple');
                 $("h1").text("Header 3");
                 $(".header-class").css("background-color", "green").css("padding", "30px");
-            }, 2000) // in ms
+            }, 2000) // in ms */
         })
 
 
     </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
