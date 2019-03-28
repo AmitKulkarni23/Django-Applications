@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.http import JsonResponse
 from accounts.forms import LoginForm, GuestForm
 from .models import Cart
 from products.models import Product
@@ -38,10 +38,22 @@ def cart_update(request):
         if product_obj in cart_obj.products.all():
             # Remove a product
             cart_obj.products.remove(product_obj)
+            product_added = False
         else:
             # Add a product
             cart_obj.products.add(product_obj)  # or cart_obj.products.add(product_id)
+            product_added = True
         request.session["cart_items"] = cart_obj.products.count()
+
+        if request.is_ajax():
+            print("Ajax request")
+            # We want to send it back in JS or XML( Asynchronous Javascript nad XML)
+            # In our case we will send it back in JSON format
+            json_data = {
+                "added": product_added,
+                "removed": not product_added,
+            }
+            return JsonResponse(json_data)
     return redirect("carts:home")
 
 
