@@ -67,10 +67,9 @@
 
                     let cartTable = $(".cart-table")
                     let cartBody = cartTable.find(".cart-body")
-
-                    cartBody.html("<h1>Changed</h1>")
-
-                    let refreshCartUrl = "/api/cart"
+                    let currentUrl = window.location.href
+                    let productRows = cartBody.find(".cart-products")
+                    let refreshCartUrl = "/api/cart/"
                     // Using the GET method to uodate the cart
                     // Actually using the POST data to refresh the page
                     let refreshCartMethod = "GET"
@@ -82,10 +81,14 @@
                         success: function(data){
                             console.log("Success")
                             console.log(data)
+                            if(data.products.length > 0){
+                                productRows.html("<tr><td colspan=3>Coming Soon</td></tr>")
+                                cartBody.find(".cart-subtotal").text(data.subtotal)
+                                cartBody.find(".cart-total").text(data.total)
+                            }
                         },
                         error: function(errorData){
-                            console.log("Error")
-                            console.log(errorData)
+                            window.location.href = currentUrl
                         }
                     })
                 }
