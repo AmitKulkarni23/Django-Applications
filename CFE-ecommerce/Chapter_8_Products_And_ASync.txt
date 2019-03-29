@@ -1,0 +1,202 @@
+Producst and Async
+
+=======================
+
+Page doesn't reload -> It does something
+It doesn't affect how you use the web application
+
+
+=======================
+
+Synchronous Loading -> Complete a task -> wait for it to complete -> do the new task
+Async Loading -> Do not need to wait for something for finish
+
+
+For e-commerce its about usability
+ 
+=======================
+
+Ajax-ify a form
+
+Add to Cart button -> into an Ajax button -> using jQuery
+
+update-cart.html
+
+When you click on a form an action is called
+- we wnat to prevent the default from happening
+
+
+<script>
+	$(document).ready(function () {
+		let productForm = $(".form-product-ajax")
+		productForm.submit(function(event){
+			event.preventDefault();
+			console.log("Form is not sending")
+
+			// We want to know the URL the submit is going to
+			// the method that is associated with it
+
+			let thisForm = $(this)
+
+			let actionEndPoint = thisForm.attr("action");
+			let httpMethod = thisForm.attr("method");
+			let formData = thisForm.serialize();
+
+
+			$.ajax({
+				url: actionEndPoint,
+				method : httpMethod,
+				data : formData,
+				success : function(data){
+					console.log("Success")
+					console.log(data)
+				},
+				error: function(errorData){
+					console.log("Error")
+					console.log(errorData)
+				}
+			})
+
+		})
+	})
+</script>
+
+
+
+In Django:
+if request.is_ajax():
+	# Do something
+
+=======================
+
+Handle Ajax in Django with JsonResponse
+
+Our cart_update() view is returning a redirect
+This means that they are transofrming the experience of the user to a HTML page
+
+We still want to maintain this , becuase some users might disable their JS on the browser
+
+Therefore, we will send the response is in JSON
+from django,http import JsonResponse
+
+
+JsonRepsonse
+
+if request.is_ajax():
+	print("Ajax request")
+	# We want to send it back in JS or XML( Asynchronous Javascript nad XML)
+	# In our case we will send it back in JSON format
+	json_data = {
+		"added": product_added,
+		"removed": not product_added,
+	}
+	return JsonResponse(json_data)
+	
+	
+base.html
+
+<script>
+	$(document).ready(function () {
+		let productForm = $(".form-product-ajax")
+		productForm.submit(function(event){
+			event.preventDefault();
+			console.log("Form is not sending")
+
+			// We want to know the URL the submit is going to
+			// the method that is associated with it
+
+			let thisForm = $(this)
+			let actionEndPoint = thisForm.attr("action");
+			let httpMethod = thisForm.attr("method");
+			let formData = thisForm.serialize();
+
+
+			$.ajax({
+				url: actionEndPoint,
+				method : httpMethod,
+				data : formData,
+				success : function(data){
+					let submitSpan = thisForm.find(".submit-span")
+					if(data.added){
+						submitSpan.html("In cart<button type=\"submit\" class=\"btn btn-link\">Remove?</button>")
+					}
+					else{
+						submitSpan.html("<button class=\"btn btn-success\">Add to cart</button>")
+					}
+					console.log(submitSpan.html())
+				},
+				error: function(errorData){
+					console.log("Error")
+					console.log(errorData)
+				}
+			})
+
+		})
+	})
+</script>
+
+=======================
+
+Cart Item Count
+
+
+// Update the count of items displayed on the cart icon
+let navBarCount = $(".navbar-cart-count")
+navBarCount.text(data.cartItemCount)
+
+
+=======================
+
+Refresh Cart Ajax - Part 1
+
+
+Action Endpoint -> makes sure that even if the user disables JS, even then it works
+
+
+// Check the window location
+if(window.location.href.indexOf("cart") -1){
+	refreshCart()
+}
+
+function refreshCart(){
+	// A helper function to make sure that the
+	// cart page is updated when "Remove" is pressed upon
+
+	let cartTable = $(".cart-table")
+	let cartBody = cartTable.find(".cart-body")
+
+	cartBody.html("<h1>Changed</h1>")
+
+	let refreshCartUrl = "/api/cart"
+	// Using the GET method to uodate the cart
+	// Actually using the POST data to refresh the page
+	let refreshCartMethod = "GET"
+
+	$.ajax({
+		url: refreshCartUrl,
+		method: refreshCartMethod,
+		data: {},
+		success: function(data){
+			console.log("Success")
+			console.log(data)
+		},
+		error: function(errorData){
+			console.log("Error")
+			console.log(errorData)
+		}
+	})
+}
+
+
+
+=======================
+
+Refresh Cart Ajax - Part 2
+
+
+
+=======================
+
+
+Refresh Cart Ajax - Part 3
+=======================

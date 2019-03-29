@@ -26,7 +26,8 @@
                     // the method that is associated with it
 
                     let thisForm = $(this)
-                    let actionEndPoint = thisForm.attr("action");
+                    //let actionEndPoint = thisForm.attr("action");
+                    let actionEndPoint = thisForm.attr("data-endpoint")
                     let httpMethod = thisForm.attr("method");
                     let formData = thisForm.serialize();
 
@@ -43,15 +44,51 @@
                             else{
                                 submitSpan.html("<button class=\"btn btn-success\">Add to cart</button>")
                             }
-                            console.log(submitSpan.html())
+
+                            // Update the count of items displayed on the cart icon
+                            let navBarCount = $(".navbar-cart-count")
+                            navBarCount.text(data.cartItemCount)
+
+                            // Check the window location
+                            if(window.location.href.indexOf("cart") -1){
+                                refreshCart()
+                            }
                         },
                         error: function(errorData){
                             console.log("Error")
                             console.log(errorData)
                         }
                     })
-
                 })
+
+                function refreshCart(){
+                    // A helper function to make sure that the
+                    // cart page is updated when "Remove" is pressed upon
+
+                    let cartTable = $(".cart-table")
+                    let cartBody = cartTable.find(".cart-body")
+
+                    cartBody.html("<h1>Changed</h1>")
+
+                    let refreshCartUrl = "/api/cart"
+                    // Using the GET method to uodate the cart
+                    // Actually using the POST data to refresh the page
+                    let refreshCartMethod = "GET"
+
+                    $.ajax({
+                        url: refreshCartUrl,
+                        method: refreshCartMethod,
+                        data: {},
+                        success: function(data){
+                            console.log("Success")
+                            console.log(data)
+                        },
+                        error: function(errorData){
+                            console.log("Error")
+                            console.log(errorData)
+                        }
+                    })
+                }
             })
         </script>
   </body>

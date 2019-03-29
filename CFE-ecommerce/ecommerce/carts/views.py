@@ -46,12 +46,12 @@ def cart_update(request):
         request.session["cart_items"] = cart_obj.products.count()
 
         if request.is_ajax():
-            print("Ajax request")
             # We want to send it back in JS or XML( Asynchronous Javascript nad XML)
             # In our case we will send it back in JSON format
             json_data = {
                 "added": product_added,
                 "removed": not product_added,
+                "cartItemCount" : cart_obj.products.count(),
             }
             return JsonResponse(json_data)
     return redirect("carts:home")
