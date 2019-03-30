@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from products.models import Product
 
-
-
 # Create your views here.
+
+
 class SearchProductView(ListView):
     template_name = "search/view.html"
 

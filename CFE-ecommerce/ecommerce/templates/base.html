@@ -17,6 +17,43 @@
     {% include "base/js.html" %}
         <script>
             $(document).ready(function () {
+                // Auto Search
+                let searchForm = $(".search-from")
+                let searchInput = searchForm.find("[name='q']")
+
+                // Change the search button to teh loading icon
+                let searchBtn = searchForm.find("[type='submit']")
+
+                let typingTimer;
+                let typingInterval = 500 // 0.5 seconds
+
+                // When the key pressing comes up, key os released
+                searchInput.keyup(function(event){
+                    clearTimeout(typingTimer)
+                    typingTimer = setTimeout(performSearch, typingInterval)
+                })
+
+                // When teh key os pressed at the very beginning
+                searchInput.keydown(function(event){
+                    clearTimeout(typingTimer)
+                })
+
+                function displaySearching(){
+                    searchBtn.addClass("disabled")
+                    searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+                }
+
+                function performSearch(){
+                    displaySearching()
+                    let query = searchInput.val()
+                    setTimeout(function(){
+                        window.location.href = "/search/?q=" + query
+                    }, 1000)
+
+                }
+
+
+                // Cart + Add Product
                 let productForm = $(".form-product-ajax")
                 productForm.submit(function(event){
                     event.preventDefault();
@@ -68,7 +105,7 @@
                     let cartTable = $(".cart-table")
                     let cartBody = cartTable.find(".cart-body")
                     let currentUrl = window.location.href
-                    let productRows = cartBody.find(".cart-products")
+                    let productRows = cartBody.find(".cart-product")
                     let refreshCartUrl = "/api/cart/"
                     // Using the GET method to uodate the cart
                     // Actually using the POST data to refresh the page
@@ -79,12 +116,24 @@
                         method: refreshCartMethod,
                         data: {},
                         success: function(data){
-                            console.log("Success")
-                            console.log(data)
+                            let hiddenCartItemRemoveForm = $(".cart-item-remove-form")
                             if(data.products.length > 0){
-                                productRows.html("<tr><td colspan=3>Coming Soon</td></tr>")
+                                productRows.html(" ")
+                                i = data.products.length
+                                $.each(data.products, function(index, value){
+                                    let newCartItemRemove = hiddenCartItemRemoveForm.clone()
+                                    newCartItemRemove.css("display", "block")
+
+                                    newCartItemRemove.find(".cart-item-product-id").val(value.id)
+                                    cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td><a href='" + value.url + "'>" + value.name + "</a>"
+                                        + newCartItemRemove.html() + "</td><td>" + value.price + "</td></tr>")
+                                    i --
+                                })
+
                                 cartBody.find(".cart-subtotal").text(data.subtotal)
                                 cartBody.find(".cart-total").text(data.total)
+                            }else{
+                                window.location.href = currentUrl
                             }
                         },
                         error: function(errorData){

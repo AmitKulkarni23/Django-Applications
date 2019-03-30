@@ -193,6 +193,15 @@ function refreshCart(){
 
 Refresh Cart Ajax - Part 2
 
+=======================
+
+Refresh Cart Ajax - Part 3
+
+=======================
+
+Finalizing Cart Updating with Ajax 3
+
+
 
 
 =======================
@@ -200,3 +209,54 @@ Refresh Cart Ajax - Part 2
 
 Refresh Cart Ajax - Part 3
 =======================
+
+
+
+Auto Search
+
+After users stop typing on search, it will trigger a search automatically
+
+
+let searchForm = $(".search-from")
+let searchInput = searchForm.find("[name='q']")
+
+
+// We want to set up a variable that will handle out typing timer
+
+// Auto Search
+let searchForm = $(".search-from")
+let searchInput = searchForm.find("[name='q']")
+
+// Change the search button to teh loading icon
+let searchBtn = searchForm.find("[type='submit']")
+
+let typingTimer;
+let typingInterval = 500 // 0.5 seconds
+
+// When the key pressing comes up, key os released
+searchInput.keyup(function(event){
+	clearTimeout(typingTimer)
+	typingTimer = setTimeout(performSearch, typingInterval)
+})
+
+// When teh key os pressed at the very beginning
+searchInput.keydown(function(event){
+	clearTimeout(typingTimer)
+})
+
+function displaySearching(){
+	searchBtn.addClass("disabled")
+	searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+}
+
+function performSearch(){
+	displaySearching()
+	let query = searchInput.val()
+	setTimeout(function(){
+		window.location.href = "/search/?q=" + query
+	}, 1000)
+
+}
+
+=======================
+
