@@ -92,6 +92,12 @@
                             }
                         },
                         error: function(errorData){
+                            // jQuery Confirm
+                            $.alert({
+                                title : "Alert",
+                                content: "An error occurred",
+                                theme: "Modern",
+                            })
                             console.log("Error")
                             console.log(errorData)
                         }
@@ -137,7 +143,11 @@
                             }
                         },
                         error: function(errorData){
-                            window.location.href = currentUrl
+                            $.alert({
+                                title: "Alert",
+                                content: "Refreshing Cart Failed",
+                                theme: "modern",
+                            })
                         }
                     })
                 }

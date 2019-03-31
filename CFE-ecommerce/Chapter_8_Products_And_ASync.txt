@@ -260,3 +260,17 @@ function performSearch(){
 
 =======================
 
+Use jQuery confirm
+
+
+// jQuery Confirm
+$.alert({
+	title : "Alert",
+	content: "An error occurred",
+	theme: "Modern",
+})
+
+
+=======================
+
+Ajaxify the Contact Form Part 1
