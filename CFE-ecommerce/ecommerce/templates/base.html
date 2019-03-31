@@ -16,6 +16,41 @@
     </div>
     {% include "base/js.html" %}
         <script>
+
+            // Contact Form Handler
+            let contactForm = $(".contact-form")
+            let contactFormMethod = contactForm.attr("method")
+            let contactFormEndPoint = contactForm.attr("action")
+
+            contactForm.submit(function(event){
+                event.preventDefault()
+                let contactFormData = contactForm.serialize()
+                let thisForm = $(this)
+                $.ajax({
+                    method: contactFormMethod,
+                    url: contactFormEndPoint,
+                    data: contactFormData,
+                    success: function(data){
+                        // Empty out the form
+                        thisForm[0].reset()
+                        $.alert({
+                            "title" : "Success",
+                            "content" : data.message,
+                            "theme" : "modern",
+                        })
+                    },
+                    error: function(error){
+                        console.log(error)
+                        $.alert({
+                            "title" : "Alert",
+                            "content" : "An error occurred",
+                            "theme" : "modern",
+                        })
+                    }
+                })
+            })
+
+            // Auto Search
             $(document).ready(function () {
                 // Auto Search
                 let searchForm = $(".search-from")

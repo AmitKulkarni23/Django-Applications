@@ -274,3 +274,38 @@ $.alert({
 =======================
 
 Ajaxify the Contact Form Part 1
+
+// Contact Form Handler
+let contactForm = $(".contact-form")
+let contactFormMethod = contactForm.attr("method")
+let contactFormEndPoint = contactForm.attr("action")
+
+contactForm.submit(function(event){
+	event.preventDefault()
+	let contactFormData = contactForm.serialize()
+	$.ajax({
+		method: contactFormMethod,
+		url: contactFormEndPoint,
+		data: contactFormData,
+		success: function(data){
+
+		},
+		error: function(error){
+			$.alert({
+				"title" : "Alert",
+				"content" : "An error occurred",
+				"theme" : "modern",
+			})
+		}
+	})
+})
+
+
+
+
+
+=======================
+
+
+
+=======================
