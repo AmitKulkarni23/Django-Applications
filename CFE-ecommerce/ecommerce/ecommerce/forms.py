@@ -18,16 +18,25 @@ class ContactForm(forms.Form):
     # Error handling mechanism
     # def clean_<field_name>
 
-    def clean_email(self):
-        """
-        CError handling mechanism for email
-        :return:
-        """
-        email = self.cleaned_data.get("email")
-        if not "gmail.com" in email:
-            raise forms.ValidationError("Email has to be gamil.com")
+    # def clean_email(self):
+    #     """
+    #     CError handling mechanism for email
+    #     :return:
+    #     """
+    #     email = self.cleaned_data.get("email")
+    #     if not "gmail.com" in email:
+    #         raise forms.ValidationError("Email has to be gamil.com")
+    #
+    #     return email
 
-        return email
+    # def clean_content(self):
+    #     """
+    #     Error handling for the name
+    #     This is a dummy to test contact form with 2 errors
+    #     jQuery errors
+    #     :return:
+    #     """
+    #     raise forms.ValidationError("Content is wrong")
 
 
 

@@ -275,6 +275,19 @@ $.alert({
 
 Ajaxify the Contact Form Part 1
 
+In views.py
+
+if contact_form.is_valid():
+	if request.is_ajax():
+		return jsonResponse({"message" : "Success"})
+
+if contact_form.errors:
+	errors = contact_form.errors.as_json()
+	if request.is_ajax():
+		return HttpResponse(errors, status=400, content_type="application/json")
+	
+	
+
 // Contact Form Handler
 let contactForm = $(".contact-form")
 let contactFormMethod = contactForm.attr("method")
@@ -306,6 +319,26 @@ contactForm.submit(function(event){
 
 =======================
 
+Ajaxify the contact form part 2
 
 
 =======================
+
+Custom ecommerce JS
+
+Convert any given form into using jQuery
+- Exception is hadnling file upload( more advanced )
+
+
+Instead of writing the JS inline, we will place it in a new file
+
+
+Everytime you add something to your static files -> You want to do
+>>> python manage.py collectstatic
+
+
+=======================
+
+Ajax CSRF Security for Django
+
+https://docs.djangoproject.com/en/2.1/ref/csrf/ 
