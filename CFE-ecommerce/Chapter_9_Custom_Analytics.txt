@@ -1,0 +1,29 @@
+Custom Analytics
+
+========================================
+
+Intro
+- Understanding our users better
+- Info about session
+- Get user data as much as we can
+- Insights into building a better service
+- Can be done using third party, but we will do it internally
+- Data is valuable( don't give it away )
+
+========================================
+
+Getting Started
+
+- https://www.codingforentrepreneurs.com/blog/custom-analytics-with-django/#watch
+
+Third party Analytics Tools
+- Google Analytics
+
+========================================
+
+Craft the Object Viewed Model
+
+
+
+
+========================================
