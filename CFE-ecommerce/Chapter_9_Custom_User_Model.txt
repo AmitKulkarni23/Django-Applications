@@ -118,8 +118,118 @@ class User(AbstractBaseUser):
 
 Create the user model manager
 
+BaseUserManager
+
+class UserManager(BaseUserManager):
+    def create_user(self, email, password=None):
+        """
+        Creates and saves a User with the given email and password.
+		This method takes in all teh required fields
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_staffuser(self, email, password):
+        """
+        Creates and saves a staff user with the given email and password.
+        """
+        user = self.create_user(
+            email,
+            password=password,
+        )
+        user.staff = True
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password):
+        """
+        Creates and saves a superuser with the given email and password.
+        """
+        user = self.create_user(
+            email,
+            password=password,
+        )
+        user.staff = True
+        user.admin = True
+        user.save(using=self._db)
+        return user
+
+==============================
+
+Change Default User model to our Custom User Model
 
 
+In settings.py
+
+AUTH_USER_MODEL = 'accounts.USER' 
+
+
+Unique Constraint Failed
+
+- Changing user model caused issues in teh Billing Model
+- This is becuase of the various signals that we have
+
+
+- Solution 1: Delete dB
+- backup your product data
 
 
 ==============================
+
+Reload databases with fixtures
+
+fixtures -> Save our prexisting data from our database
+clean out our database
+And reload
+
+
+In products folder create a sub folder called as "fixtures"
+
+>>> python manage.py dumpdata products.Product --format json --indent 4 > products/fixtures/products.json
+
+
+where products.Product -> app name and the model name
+
+
+
+Now delete the migratiosn from the accounts app
+Rename teh db.sqlite3 file to db2.sqlite3
+
+
+>>> python manage.py makemigrations
+>>> python manage.py migrate
+
+Now you have all the product data
+Its time to load this data
+
+Try creating super user now
+WORKS
+
+==============================
+
+Forms and Admin for our custom user
+
+In accounts/admin.py
+
+class UserAdmin(admin.ModelAdmin):
+    search_fields = ["email"]
+    class Meta:
+        model = User
+
+
+
+
+This will add search facility in the admin
+
+==============================
+
+Add a erquired field to the model
+

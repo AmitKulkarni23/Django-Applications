@@ -1,0 +1,86 @@
+[
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "title": "T-Shirt",
+        "slug": "tshirt",
+        "description": "Anti-Social Social Club",
+        "price": "9.99",
+        "image": "",
+        "featured": false,
+        "timestamp": "2019-03-10T06:50:37.007Z",
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "title": "Hat",
+        "slug": "hat",
+        "description": "Boston Red Sox",
+        "price": "9.99",
+        "image": "",
+        "featured": false,
+        "timestamp": "2019-03-10T06:50:37.007Z",
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+        "title": "The Godfather",
+        "slug": "godfather",
+        "description": "A classic book by Mario Puzo",
+        "price": "2.99",
+        "image": "products/10286823/10286823.jpg",
+        "featured": false,
+        "timestamp": "2019-03-10T06:50:37.007Z",
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+        "title": "CTCI",
+        "slug": "ctci",
+        "description": "Cracking the Coding Interview",
+        "price": "2.99",
+        "image": "",
+        "featured": true,
+        "timestamp": "2019-03-10T06:50:37.007Z",
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+        "title": "Hat",
+        "slug": "hat-vhwp",
+        "description": "This is another hat.\r\nLet's see if the slug works",
+        "price": "0.99",
+        "image": "",
+        "featured": true,
+        "timestamp": "2019-03-10T06:50:37.007Z",
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+        "title": "Lorem Ipsum",
+        "slug": "lorem-ipsum",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        "price": "1.99",
+        "image": "",
+        "featured": true,
+        "timestamp": "2019-03-10T06:50:37.007Z",
+        "active": true
+    }
+}
+]
