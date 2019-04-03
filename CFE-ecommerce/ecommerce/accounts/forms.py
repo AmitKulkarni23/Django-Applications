@@ -15,7 +15,7 @@ class LoginForm(forms.Form):
     """
     Class based form for user to log-in into
     """
-    user_name = forms.EmailField(label='Email')
+    email = forms.EmailField(label='Email')
     password = forms.CharField(widget=forms.PasswordInput)
 
 
@@ -67,7 +67,7 @@ class RegisterForm(forms.ModelForm):
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
-        user.active = False # send a confirmation email
+        # user.active = False # send a confirmation email
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()

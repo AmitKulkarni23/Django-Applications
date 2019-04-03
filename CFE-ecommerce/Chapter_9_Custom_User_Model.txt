@@ -231,5 +231,22 @@ This will add search facility in the admin
 
 ==============================
 
-Add a erquired field to the model
+Add a required field to the model
 
+==============================
+
+Update Login and Register Forms
+
+- Now that we have changed our user model to have email as teh required field and not user name
+Can users login with their emails from the login page?
+
+authenticate portion doesn't change
+
+==============================
+
+Login and Register Views
+
+- Make class based views
+
+
+==============================
