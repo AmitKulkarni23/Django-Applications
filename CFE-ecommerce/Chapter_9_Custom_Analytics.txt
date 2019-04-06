@@ -121,3 +121,57 @@ class ObjectViewedMixin(object):
 
 Handle the Object Viewed Signal
 
+
+========================================
+
+Handling and Ending User Sessions
+
+- get session key for any given session key
+- And monitor the session
+
+- After the user logs -in we will create a signal
+
+
+Check analytics.py
+- Created a new class called as UserSession
+
+session_key = request.session.session_key
+
+
+But how do you end the sessions?
+
+Session.objects.get(pk=session_key).delete() -> Will delete the session
+
+
+def end_session(self):
+	session_key = self.session_key
+	try:
+		Session.objects.get(pk=session_key).delete()
+		self.ended = True
+		self.active = False
+		self.save()
+	except:
+		pass
+
+	return self.ended
+
+	
+	
+We want to have only 1 session per user
+-> Delete all other sessions for this user
+-> So we should use a post save signal
+
+
+def post_save_session_receiver(sender, instance, created, *args, **kwargs):
+    if created:
+        qs = UserSession.objects.filter(user=instance.user, ended=False, active=False).exclude(id=instance.id)
+
+        for item in qs:
+            item.end_session()
+
+			
+			
+
+
+
+========================================

@@ -1,0 +1,7 @@
+Stripe Integration
+
+Intro
+- Stripe is an integration service that allows us to accept payment from major credit cards
+
+
+==========================

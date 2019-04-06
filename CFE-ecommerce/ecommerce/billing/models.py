@@ -1,8 +1,11 @@
 from django.db import models
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from accounts.models import GuestEmail
+import stripe
 
+
+stripe.api_key = "sk_test_DjVHt74y3ojZJJKuXM85Q3Aq00JNC0FkIO"
 
 # When a user is created we need to create a billing profile
 # Use Django signals
@@ -49,7 +52,11 @@ class BillingProfile(models.Model):
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
-    # Customer ID in Stripe or Braintree
+
+    # Customer ID in Stripe
+    # This customer id will be the unique ID for thsi customer on stripe
+    customer_id = models.CharField(max_length=120, null=True, blank=True)
+
 
     objects = BillingProfileManager()
 
@@ -58,11 +65,19 @@ class BillingProfile(models.Model):
 
 
 # If customer_ID is present for a payments app
-# def billing_profile_create_receiver(sender, instance, created, *args, **kwargs):
-#     if created:
-#         print("ACTUAL API Request -> Send to Stripe or Braintree")
-#         instance.customer_id = new_id
-#         instance.save()
+def billing_profile_create_receiver(sender, instance, *args, **kwargs):
+    # If there is no email on teh customer, we don't want to
+    # create the ID on Stripe
+    if not instance.customer_id and instance.email:
+        print("ACTUAL API Request -> Send to Stripe")
+
+        # Run an API request to Stripe
+        customer = stripe.Customer.create(email=instance.email)
+        print(customer)
+        instance.customer_id = customer.id
+
+
+pre_save.connect(billing_profile_create_receiver, sender=BillingProfile)
 
 
 def user_created_receiver(sender, instance, created, *args, **kwargs):

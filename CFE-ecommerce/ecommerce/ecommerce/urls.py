@@ -24,6 +24,7 @@ from accounts.views import LoginView, guest_register_view, RegisterView
 from django.contrib.auth.views import LogoutView
 from adresses.views import checkout_address_create_view, checkout_address_reuse_view
 from carts.views import cart_detail_api_view
+from billing.views import payment_method_view, payment_method_createview
 
 urlpatterns = [
     path(r"", home_page, name="home"),
@@ -36,6 +37,8 @@ urlpatterns = [
     path("products/", include("products.urls", namespace="products")),
     re_path(r"api/cart/$", cart_detail_api_view, name="api-cart"),
     path("cart/", include("carts.urls", namespace="carts")),
+    path("billing/payment-method", payment_method_view, name="billing-payment-method"),
+    path("billing/payment-method/create/", payment_method_createview, name='billing-payment-method-endpoint'),
     path("search/", include("search.urls", namespace="search")),
     path("register/guest/", guest_register_view, name="guest_register"),
     path("checkout/address/create", checkout_address_create_view, name="checkout_address_create"),
