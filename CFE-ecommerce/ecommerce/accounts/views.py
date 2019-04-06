@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.utils.http import is_safe_url
 from .models import GuestEmail
 from django.views.generic import CreateView, FormView
+from .signals import user_logged_in_signal
 
 # Create your views here.
 
@@ -85,6 +86,8 @@ class LoginView(FormView):
             # Login the user
             login(request, user)
 
+            # Send the signal after the user logs in
+            user_logged_in_signal.send(user.__class__, instance=user, request=request)
             try:
                 del request.session["guest_email_id"]
             except:
@@ -96,7 +99,6 @@ class LoginView(FormView):
                 return redirect("/")
 
         return super(LoginView, self).form_invalid(form)
-
 
 
 # Use the user model

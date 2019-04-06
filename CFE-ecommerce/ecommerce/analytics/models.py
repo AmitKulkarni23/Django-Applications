@@ -4,8 +4,14 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.conf import settings
 from .signals import object_viewed_signal
 from .utils import get_client_ip
+from django.contrib.sessions.models import Session
+from django.db.models.signals import pre_save, post_save
+from accounts.signals import user_logged_in_signal
 
 User = settings.AUTH_USER_MODEL
+
+FORCE_USER_SESSION_END = getattr(settings, 'FORCE_USER_SESSION_END', False)
+FORCE_INACTIVE_USER_ENDSESSION = getattr(settings, 'FORCE_INACTIVE_USER_ENDSESSION', False)
 
 
 class ObjectViewed(models.Model):
@@ -55,3 +61,80 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
 
 
 object_viewed_signal.connect(object_viewed_receiver)
+
+
+class UserSession(models.Model):
+    # Even if teh user is not logged in we want to capture info
+    # The actual user instance
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
+
+    # Note: There is an IP Field in Django models
+    ip_address = models.CharField(max_length=220, blank=True, null=True)
+
+    # Session key
+    session_key = models.CharField(max_length=100, null=True, blank=True)
+
+    # We want to know when the user viewed a page, therefore we need a timestamp
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    # Whether the session is active or not
+    active = models.BooleanField(default=True)
+
+    # Whether or not we ant to manually end a session
+    ended = models.BooleanField(default=False)
+
+    def end_session(self):
+        session_key = self.session_key
+        try:
+            Session.objects.get(pk=session_key).delete()
+            self.ended = True
+            self.active = False
+            self.save()
+        except:
+            pass
+
+        return self.ended
+
+
+def post_save_session_receiver(sender, instance, created, *args, **kwargs):
+    if created:
+        qs = UserSession.objects.filter(user=instance.user, ended=False, active=False).exclude(id=instance.id)
+
+        for item in qs:
+            item.end_session()
+
+    if not instance.active and not instance.ended:
+        instance.end_session()
+
+
+if FORCE_USER_SESSION_END:
+    post_save.connect(post_save_session_receiver, sender=UserSession)
+
+
+def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
+    # User is logged in
+    print(instance)
+    ip_address = get_client_ip(request)
+    user = instance
+    session_key = request.session.session_key
+
+    # Create a new session
+    UserSession.objects.create(user=user, ip_address=ip_address, session_key=session_key)
+
+
+user_logged_in_signal.connect(user_logged_in_receiver)
+
+
+def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
+    if not created:
+        # This user was not created now
+        # We went into the admin and deactivated this user
+        # Need to end / delete the session related to this User
+        qs = UserSession.objects.filter(user=instance.user, ended=False, active=False).exclude(id=instance.id)
+
+        for item in qs:
+            item.end_session()
+
+
+if FORCE_INACTIVE_USER_ENDSESSION:
+    post_save.connect(post_save_user_changed_receiver, sender=User)
