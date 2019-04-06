@@ -5,6 +5,7 @@ from .models import Product
 from ecommerce.utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from carts.models import Cart
+from analytics.mixin import ObjectViewedMixin
 
 
 class ProductListView(ListView):
@@ -41,7 +42,7 @@ def product_list_view(request):
 # ===========================================================
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(ObjectViewedMixin, DetailView):
     # queryset = Product.objects.all()
     template_name = "products/detail.html"
 
@@ -108,7 +109,7 @@ def product_detail_view(request, pk=None, *args, **kwargs):
 # ===========================================================
 
 
-class ProductFeaturedListView(ListView):
+class ProductFeaturedListView(ObjectViewedMixin, ListView):
     template_name = "products/product_list.html"
 
     def get_queryset(self, *args, **kwargs):
@@ -120,8 +121,10 @@ class ProductFeaturedListView(ListView):
         """
         return Product.objects.featured()
 
+# ===========================================================
 
-class ProductFeaturedDetailView(DetailView):
+
+class ProductFeaturedDetailView(ObjectViewedMixin, DetailView):
     """
     Detail View of a dfeatured object
     """
@@ -139,7 +142,7 @@ class ProductFeaturedDetailView(DetailView):
 
 
 # ===========================================================
-class ProductDetailSlugView(DetailView):
+class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     """
     To handle URLs based on slugs
     """
@@ -160,6 +163,7 @@ class ProductDetailSlugView(DetailView):
         return context
 
     def get_object(self, *args, **kwargs):
+        request = self.request
         slug = self.kwargs.get("slug")
         # instance = get_object_or_404(Product, slug=slug)
         try:
@@ -171,6 +175,12 @@ class ProductDetailSlugView(DetailView):
             instance = qs.first()
         except:
             raise Http404("Woaaahhh!!!")
+
+        # This is for analytics
+        # This class will come through with the signal
+        # That means this class will send the signal
+        # WIll actually send out the signal
+        # object_viewed_signal.send(instance.__class__, instance=instance, request=request)
         return instance
 
 
