@@ -2,6 +2,71 @@ Stripe Integration
 
 Intro
 - Stripe is an integration service that allows us to accept payment from major credit cards
+- Add credit card
+- Run transactions
 
 
 ==========================
+
+Stripe - Getting Started
+
+- Holds customers CC info -> Security
+- API is super easy
+
+
+We need to use https
+
+>>> pip install stripe
+
+Get API keys from Stripe dashboard
+
+
+backend is setup ( this si sdone by Stripe)
+We need to set up the front end
+ 
+==========================
+
+Creating Stripe Customer
+
+
+In billing\models.py
+
+# If customer_ID is present for a payments app
+def billing_profile_create_receiver(sender, instance, *args, **kwargs):
+    # If there is no email on teh customer, we don't want to
+    # create the ID on Stripe
+    if not instance.customer_id and instance.email:
+        print("ACTUAL API Request -> Send to Stripe")
+
+        # Run an API request to Stripe
+        customer = stripe.Customer.create(email=instance.email)
+        print(customer)
+        instance.customer_id = customer.id
+
+
+pre_save.connect(billing_profile_create_receiver, sender=BillingProfile)
+
+
+==========================
+
+Payment method View and Stripe JS
+
+
+https://stripe.com/docs/stripe-js/elements/quickstart
+
+- Example of how the frontend of collecting CC info from customer looks like
+
+
+==========================
+
+Improving Payment Method Form
+
+==========================
+
+Improving Payment Mthod Form 2
+
+
+
+==========================
+
+
