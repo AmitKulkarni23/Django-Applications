@@ -63,10 +63,103 @@ Improving Payment Method Form
 
 ==========================
 
-Improving Payment Mthod Form 2
+Improving Payment Method Form 2
 
+==========================
+
+Reusable Stripe Module
+
+JSRender Usage - rendering templates
+Rendering something in the {{}} brackets
+
+
+{% verbatim %}
+{% endverbatime %}
+
+-> verbatim ignores all the {{}} tags
 
 
 ==========================
 
+Add Card to Customer with Stripe
 
+- Billling profile for the user connected to the Stripe
+
+
+Stripe API reference
+- Get customer first( Customer ID)
+- Create source( based off of token)
+
+token = request.POST.get("token")
+customer = stripe.Customer.retrieve(billing_profile.customer_id)
+customer.sources.create(source=token)
+
+
+customer.sources.create(source=token) -> This gives us a response
+card_response = customer.sources.create(source=token)
+
+==========================
+
+Saving Card in Django
+
+Billing -> views.py
+
+We can now add cards to Stripe
+We can add them to our Django
+
+
+class CardManager(models.Manager):
+    def add_new(self, billing_profile, stripe_card_response):
+        if str(stripe_card_response.object) == "card":
+            # We know that this is a card
+            new_card = self.model(
+                billing_profile=billing_profile,
+                stripe_id=stripe_card_response.id,
+                brand=stripe_card_response.brand,
+                country=stripe_card_response.country,
+                exp_month=stripe_card_response.exp_month,
+                exp_year=stripe_card_response.exp_year,
+                last4=stripe_card_response.last4
+            )
+            new_card.save()
+            return new_card
+        return None
+
+
+class Card(models.Model):
+    stripe_id = models.CharField(max_length=120)
+    billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
+    brand = models.CharField(max_length=120, null=True, blank=True)
+    # 2 digit code
+    country = models.CharField(max_length=20, null=True, blank=True)
+    exp_month = models.IntegerField(null=True, blank=True)
+    exp_year = models.IntegerField(null=True, blank=True)
+    last4 = models.CharField(max_length=4, null=True, blank=True)
+    default = models.BooleanField(default=True)
+
+    objects = CardManager()
+
+    def __str__(self):
+        return "{} {}".format(self.brand, self.last4)
+
+		
+==========================
+
+Charge the customer
+
+
+Example:
+
+stripe.Charge.create(
+  amount=2000,
+  currency="usd",
+  source="tok_mastercard", # obtained with Stripe.js
+  description="Charge for jenny.rosen@example.com"
+)
+
+If there are Stripe exceptions:
+use try catch
+
+==========================
+
+Putting it all together
