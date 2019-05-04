@@ -53,7 +53,6 @@ class Cart(models.Model):
 
 # This method will be called whenever the user hits save in teh admin panel
 def m2m_changed_cart_receiver(sender, instance, action,  *args, **kwargs):
-    print(action)
     if action == "post_add" or action == "post_remove" or action == "post_clear":
         products = instance.products.all()
         total = 0

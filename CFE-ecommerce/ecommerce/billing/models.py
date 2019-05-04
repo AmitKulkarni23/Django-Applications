@@ -162,11 +162,7 @@ class ChargeManager(models.Manager):
 
     def do(self, billing_profile, order_obj, card=None):
         # Set a default card object
-        print("Coming to the do in Charge manager")
-        print("Card = ", card)
         card_obj = card
-
-        print(card_obj)
         if card_obj is None:
             print("Yes the card_obj is None")
             # Reverse relationship
@@ -175,10 +171,8 @@ class ChargeManager(models.Manager):
             # https://stackoverflow.com/questions/42080864/set-in-django-for-a-queryset
             cards = billing_profile.card_set.filter(default=True)
             if cards.exists():
-                print("Do cards exist?", cards.exists())
-                print("Woooahhhh")
                 card_obj = cards.first()
-                print("The card object is ", card_obj)
+
         if card_obj is None:
             print("The card object is still None")
             return False, "No cards available"

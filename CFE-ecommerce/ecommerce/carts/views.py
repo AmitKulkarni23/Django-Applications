@@ -135,20 +135,15 @@ def checkout_home(request):
             del request.session["cart_id"]
             redirect to success page 
         """
-        print("Oh oh ! This is a POST")
         is_prepared = order_obj.check_done()
-        print("Is oreder prepared?? ", is_prepared)
         if is_prepared:
-            print("Inside the if loop")
             did_charge, charge_msg = billing_profile.charge(order_obj)
-            print("CHARGE EXECUTED")
             if did_charge:
                 order_obj.mark_paid()
                 request.session["cart_items"] = 0
                 del request.session["cart_id"]
 
                 if not billing_profile.user:
-                    print("Yup.. Billing profile doesn't have a card associated with it")
                     # If billing profile doesn't have a user associated with it
                     # Set all of the cards associated with it to be inactive
                     billing_profile.set_cards_inactive()
