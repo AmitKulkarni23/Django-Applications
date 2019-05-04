@@ -65,6 +65,31 @@ class BillingProfile(models.Model):
     def charge(self, order_obj, card=None):
         return Charge.objects.do(self, order_obj, card)
 
+    def get_cards(self):
+        return self.card_set.all()
+
+    @property
+    def has_card(self): # Just call instance.has_card
+        # Reverse relationship
+        # Everything that is related to the billing profile
+        card_qs = self.get_cards()
+        return card_qs.exists() # Either true or false
+
+    @property
+    def default_card(self):
+        default_cards = self.get_cards().filter(default=True)
+        if default_cards.exists():
+            default_cards.first()
+
+        return None
+
+    def set_cards_inactive(self):
+        cards_qs = self.get_cards()
+        cards_qs.update(active=False)
+        return cards_qs.filter(active=True).count()
+
+
+
 # If customer_ID is present for a payments app
 def billing_profile_create_receiver(sender, instance, *args, **kwargs):
     # If there is no email on teh customer, we don't want to
@@ -92,6 +117,9 @@ post_save.connect(user_created_receiver, sender=User)
 
 
 class CardManager(models.Manager):
+    def all(self, *args, **kwargs):
+        return self.get_queryset().filter(active=True)
+
     def add_new(self, billing_profile, token):
         if token:
             # We know that this is a card
@@ -121,6 +149,8 @@ class Card(models.Model):
     exp_year = models.IntegerField(null=True, blank=True)
     last4 = models.CharField(max_length=4, null=True, blank=True)
     default = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = CardManager()
 
@@ -132,24 +162,32 @@ class ChargeManager(models.Manager):
 
     def do(self, billing_profile, order_obj, card=None):
         # Set a default card object
+        print("Coming to the do in Charge manager")
+        print("Card = ", card)
         card_obj = card
+
+        print(card_obj)
         if card_obj is None:
+            print("Yes the card_obj is None")
             # Reverse relationship
             # Card model has BillingProfile as foreign key
             # Therefore, we can get all teh cards associated with that billing profile
             # https://stackoverflow.com/questions/42080864/set-in-django-for-a-queryset
             cards = billing_profile.card_set.filter(default=True)
             if cards.exists():
+                print("Do cards exist?", cards.exists())
+                print("Woooahhhh")
                 card_obj = cards.first()
-
+                print("The card object is ", card_obj)
         if card_obj is None:
+            print("The card object is still None")
             return False, "No cards available"
 
         c = stripe.Charge.create(
             amount=int(order_obj.total * 100), # Must multiply it by 100
             currency="usd",
             customer=billing_profile.customer_id,
-            source=Card.objects.filter(billing_profile__email="kulkarni.ami@husky.neu.edu").first().stripe_id,
+            source=card_obj.stripe_id,
             metadata={"order_id":order_obj.order_id},
         )
 

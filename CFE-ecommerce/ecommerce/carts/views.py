@@ -8,6 +8,14 @@ from orders.models import Order
 from billing.models import BillingProfile
 from adresses.forms import AddressForm
 from adresses.models import Address
+from django.conf import settings
+
+
+import stripe
+STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_DjVHt74y3ojZJJKuXM85Q3Aq00JNC0FkIO")
+STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", 'pk_test_y0LrxcrefvyUkATasoRO1jbZ00nhh2JLMV')
+
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 def cart_create(user=None):
@@ -96,6 +104,7 @@ def checkout_home(request):
 
     # Reuse addresses
     address_qs = None
+    has_card = False
     if billing_profile is not None:
         if request.user.is_authenticated:
             address_qs = Address.objects.filter(billing_profile=billing_profile)
@@ -116,6 +125,8 @@ def checkout_home(request):
             # If we either have a shipping address or a billing address save the order
             order_obj.save()
 
+        has_card = billing_profile.has_card
+
     if request.method == "POST":
         # Some check that order is done
         """
@@ -124,14 +135,24 @@ def checkout_home(request):
             del request.session["cart_id"]
             redirect to success page 
         """
+        print("Oh oh ! This is a POST")
         is_prepared = order_obj.check_done()
-
+        print("Is oreder prepared?? ", is_prepared)
         if is_prepared:
+            print("Inside the if loop")
             did_charge, charge_msg = billing_profile.charge(order_obj)
+            print("CHARGE EXECUTED")
             if did_charge:
                 order_obj.mark_paid()
                 request.session["cart_items"] = 0
                 del request.session["cart_id"]
+
+                if not billing_profile.user:
+                    print("Yup.. Billing profile doesn't have a card associated with it")
+                    # If billing profile doesn't have a user associated with it
+                    # Set all of the cards associated with it to be inactive
+                    billing_profile.set_cards_inactive()
+
                 return redirect("carts:success")
             else:
                 print(charge_msg)
@@ -143,6 +164,8 @@ def checkout_home(request):
                "guest_form": guest_form,
                "address_form": shipping_address_form,
                "address_qs": address_qs,
+               "has_card" : has_card,
+               "publish_key": STRIPE_PUB_KEY,
                }
     return render(request, "carts/checkout.html", context)
 

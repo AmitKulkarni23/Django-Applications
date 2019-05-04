@@ -2,11 +2,13 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from .models import BillingProfile, Card
+from django.conf import  settings
 
 import stripe
-stripe.api_key = "sk_test_DjVHt74y3ojZJJKuXM85Q3Aq00JNC0FkIO"
-STRIPE_PUB_KEY = 'pk_test_y0LrxcrefvyUkATasoRO1jbZ00nhh2JLMV'
+STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_DjVHt74y3ojZJJKuXM85Q3Aq00JNC0FkIO")
+STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", 'pk_test_y0LrxcrefvyUkATasoRO1jbZ00nhh2JLMV')
 
+stripe.api_key = STRIPE_SECRET_KEY
 
 def payment_method_view(request):
 
