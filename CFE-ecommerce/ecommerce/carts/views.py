@@ -45,7 +45,6 @@ def cart_detail_api_view(request):
 
 
 def cart_update(request):
-    print(request.POST)
     product_id = request.POST.get("product_id")
     if product_id is not None:
         try:

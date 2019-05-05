@@ -163,3 +163,18 @@ use try catch
 ==========================
 
 Putting it all together
+
+==========================
+
+Changing Payment Methods
+- In the Finalize Checkout screen, display the card
+
+
+Payment Method: {{ billing_profile.default_card }}
+
+Default Card
+
+==========================
+
+Improving the Card UI
+

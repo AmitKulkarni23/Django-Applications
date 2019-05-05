@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db.models.signals import post_save, pre_save
 from accounts.models import GuestEmail
 import stripe
+from django.urls import reverse
 
 stripe.api_key = "sk_test_DjVHt74y3ojZJJKuXM85Q3Aq00JNC0FkIO"
 
@@ -77,9 +78,9 @@ class BillingProfile(models.Model):
 
     @property
     def default_card(self):
-        default_cards = self.get_cards().filter(default=True)
+        default_cards = self.get_cards().filter(default=True, active=True)
         if default_cards.exists():
-            default_cards.first()
+            return default_cards.first()
 
         return None
 
@@ -88,6 +89,8 @@ class BillingProfile(models.Model):
         cards_qs.update(active=False)
         return cards_qs.filter(active=True).count()
 
+    def get_payment_method_url(self):
+        return reverse("billing-payment-method")
 
 
 # If customer_ID is present for a payments app
@@ -95,11 +98,8 @@ def billing_profile_create_receiver(sender, instance, *args, **kwargs):
     # If there is no email on teh customer, we don't want to
     # create the ID on Stripe
     if not instance.customer_id and instance.email:
-        print("ACTUAL API Request -> Send to Stripe")
-
         # Run an API request to Stripe
         customer = stripe.Customer.create(email=instance.email)
-        print(customer)
         instance.customer_id = customer.id
 
 
@@ -156,6 +156,22 @@ class Card(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.brand, self.last4)
+
+
+def new_card_post_save_receiver(sender, instance, created, *args, **kwargs):
+    # When a card is created it will be default for sure
+    # When a new card is created the below if condition will run for sure
+    if instance.default:
+        billing_profile = instance.billing_profile
+
+        # Exclude this card
+        qs = Card.objects.filter(billing_profile=billing_profile).exclude(pk=instance.pk)
+
+        # Update all other cards as being non-default
+        qs.update(default=False)
+
+
+post_save.connect(new_card_post_save_receiver, sender=Card)
 
 
 class ChargeManager(models.Manager):
