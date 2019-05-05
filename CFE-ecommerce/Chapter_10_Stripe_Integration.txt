@@ -178,3 +178,22 @@ Default Card
 
 Improving the Card UI
 
+When "Add New Card" error shows up but button remains active
+We need to improve this UI
+
+Click on thsi button -> Show some action
+
+
+In ecommerce.main.js -> 
+var loadTime = 1500
+var errorHtml = "<i class='fa fa=warning'></i>A error occurred"
+var errorClasses = "btn btn-danger disabled my-3"
+var loadingHtml = "<i class='fa fa=spin fa-spinner'></i>Loading..."
+var ladongClasses = "btn btn-success disabled my-3"
+
+
+
+
+
+
+==========================

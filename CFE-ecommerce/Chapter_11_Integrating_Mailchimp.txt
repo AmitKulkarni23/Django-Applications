@@ -1,0 +1,20 @@
+Chapter_11_Mailchimp_Integration
+
+==========================================
+
+The Value of Email
+
+
+==========================================
+
+Marketing Email vs Transactional Email
+
+- treated differently by email providers(for example Gmail)
+- If you send a marketing email as a tranactional email your service might have some issues
+
+Marketing - Sales. Branding Related, Scheduled
+Transactional - Email COnfirmations, Order Confirmaton, COmmunication Notifications, Triggerred via User Action
+
+
+
+==========================================
