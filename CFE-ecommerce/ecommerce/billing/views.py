@@ -10,6 +10,7 @@ STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", 'pk_test_y0LrxcrefvyUkATaso
 
 stripe.api_key = STRIPE_SECRET_KEY
 
+
 def payment_method_view(request):
 
     # If user is authenticated
