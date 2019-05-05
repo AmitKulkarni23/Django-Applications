@@ -97,9 +97,11 @@ card.addEventListener('change', function(event) {
 var form = $('#payment-form');
 var btnLoad = form.find(".btn-load")
 var btnLoadDefaultHtml = btnLoad.html()
+console.log(btnLoadDefaultHtml);
 var btnLoadDefaultClasses = btnLoad.attr("class")
 
 form.on('submit', function(event) {
+    console.log("Add New Card clicked")
   event.preventDefault();
   // get the btn
   // display new btn ui
@@ -129,6 +131,7 @@ form.on('submit', function(event) {
 
     } else {
       // Send the token to your server
+      console.log("Was successful")
       currentTimeout = displayBtnStatus(
                             btnLoad,
                             loadingHtml,
