@@ -18,3 +18,85 @@ Transactional - Email COnfirmations, Order Confirmaton, COmmunication Notificati
 
 
 ==========================================
+
+Setup API keys
+
+- grab the API key
+- Get the list ID
+
+pip install requests
+
+Create app called as marketing - > Work with Mailchimp app - store some general data
+
+class MarketingPreference(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    # Whether  this user is subscribed to Mailchimp
+    # This is related to our database
+    # If subscribe changes then we want to delete such a user from teh mailchimp mailing list
+    subscribed = models.BooleanField(default=True)
+    mailchimp_msg = models.TextField(null=True, blank=True) # will be realted to an API call
+    timestamp = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.email
+		
+==========================================
+
+Mailchimp Class Part 1, 2, 3
+
+-> Documentation - https://developer.mailchimp.com/documentation/mailchimp/guides/get-started-with-mailchimp-api-3/
+
+Resource - https://<dc>.api.mailchimp.com/3.0 -> dc stands for DataCenter, we have put this in settings.py
+Authentication
+
+==========================================
+
+Django Side - Django & Mailchimp
+
+==========================================
+
+User Email marketing Preference View
+
+- Allow our end users to change whether or not they are subscribed to emails
+- users can subscribe in the email itself( That is a feature of mailchimp )
+
+
+Create a forms.py file in Marketing
+Create GenericViews - Update Views
+
+==========================================
+
+Mailchimp Webhook Handler
+
+- What if email subscription is done outside of Django?
+- What if the user unsubscribed in his/her email preferences?
+
+How to handle such events? - Webhooks
+Webhooks - common
+
+Stripe has webhooks
+Events happend and teh web applications themselves need to know about these events
+
+Similar to signals - post_save, pre_save
+
+An event happens - signal is triggerred - receiver function handles whatever data that comes through
+
+An event happens - webhook triggers some data somewhere
+
+Callback URL -> WE don't have a live URL
+( Only a live service can communicate with a live service)
+We haven't hosted our website yet
+
+
+
+We need live service - Use request bin
+
+
+path("webhooks/mailchimp/", MailchimpWebHookView.as_view(), name="webhooks-mailchimp"),
+
+You will create a Webhook in Mailchimp
+- Mailchimp will post to this URL
+- We are handling data that is 
+==========================================

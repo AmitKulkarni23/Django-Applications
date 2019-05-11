@@ -1,0 +1,112 @@
+Local vs Production_Environment
+
+Why do we want 2 different environments?
+
+- Debugging
+- Releases ( Testing locally, we are not ready to deploy yet)
+- Also dev environments( We wnat to setup different settings model)
+
+=================================================
+
+kirr.co/8mjnna
+
+=================================================
+
+Move settings.py into a module
+Call that folder ( or module ) settings - this is necessary
+
+Rename the existing settings.py -> base.py
+
+Every settings.py we use in the future we want to base it off of base.py
+
+Move base.py into the settings folder.
+
+__init__.py -> Python when it goes into the module it looks in __init__.py file first
+
+
+
+BASE_DIR - what is this?
+
+The root of our Django project is where manage.py is
+
+settings.py -> E:\\SelfLearning\\Mozilla\\locallibrary\\Django-Applications\\CFE-ecommerce\\ecommerce\\ecommerce
+manage.py -> E:\SelfLearning\Mozilla\locallibrary\Django-Applications\CFE-ecommerce\ecommerce\manage.py
+
+Therefore,
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+Updated our settings where our manage.py is
+
+=================================================
+
+Multiple Settings Module
+
+We can add any number of settings modules
+
+settings/__init__.py
+
+from .base import *
+from .local import *
+from .production import *
+
+
+By default we want our production done correctly
+
+Therefore in our settings/__init__.py file we do something like:
+
+
+from .base import *
+from .production import *
+
+try:
+    from .local import *
+except:
+    pass
+
+
+
+This means that if we are facing any error in the local file, just ignore it and go off of production
+
+Note for production files -> 
+DEBUG = FALSE
+ALLOWED_HOSTS = [] -> Thi should be changed
+
+
+When we go live, we will not even bring the local files
+ORDERING IS IMPORTANT
+
+production should be the last thing imported - for a production environment
+
+=================================================
+
+Prepare for HTTPS
+
+In the past, having a secure site was expensive
+Now its free because of Let's Encrypt
+
+kirr.co/vklau5 - SSL/TLS settings for Django
+
+=================================================
+
+The gitignore file
+
+kirr.co/moo1b0
+
+=================================================
+
+Requirements file
+
+- Do a pip freeze from your manage.py
+- This will list out a number of packages with their version numbers
+
+
+=================================================
+
+Setup Git Version Control
+
+=================================================
+
+Deploy to Heroku
+
+=================================================
