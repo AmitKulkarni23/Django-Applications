@@ -109,4 +109,55 @@ Setup Git Version Control
 
 Deploy to Heroku
 
+
+Heroku - helps us to take care of our code and then takes care of serving the code
+
+
+$ heroku login
+
+
+$ heroku create <project-name>
+
+heroku  https://git.heroku.com/amit-new-ecommerce.git (fetch)
+heroku  https://git.heroku.com/amit-new-ecommerce.git (push)
+
+
+Now these are heroku remotes.
+These are empty when you create the app
+
+If you want the remotes to have the same git repository as your app is in then run "heroku create <app-name>" from teh root of your git repo
+
+Step 1)
+Procfile
+In this Procfile just enter
+web: gunicorn dj-project.wsgi
+
+
+Step 2)
+Install some of packages related to Heroku
+psycopg2 - PostgreSQL python wrapper
+dj-database-url
+gunicorn
+
+
+NEXT
+Add python runtime
+
+$ python -V
+
+Create a file called runtime.txt
+
+
+We need Heroku to have our database
+
+
+heroku addons:create heroku-postgresql:hobby-dev
+
+
+We need to update our production settings to use PostgreSQL database installed in Heroku
+
+
+Before pushing to heroku, disable collect static
+$ heroku config:set DISABLE_COLLECTSTATIC=1
+
 =================================================

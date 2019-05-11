@@ -13,8 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -27,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
 
     # Our own apps
     'products',
@@ -52,7 +49,6 @@ INSTALLED_APPS = [
     'marketing',
 ]
 
-
 # Chnages the built-in user model to ours
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -64,8 +60,7 @@ STRIPE_PUB_KEY = 'pk_test_y0LrxcrefvyUkATasoRO1jbZ00nhh2JLMV'
 
 MAILCHIMP_API_KEY = "49caa8fa86f14fc041240143faa868a0-us20"
 MAILCHIMP_DATA_CENTER = "us20"
-MAILCHIMP_EMAIL_LIST_ID = "766a89e99f" # Audience -> Settings -> Audience Name and Defaults
-
+MAILCHIMP_EMAIL_LIST_ID = "766a89e99f"  # Audience -> Settings -> Audience Name and Defaults
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,7 +78,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, '../../templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -99,17 +94,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../../db2.sqlite3'),
     }
 }
 
+import dj_database_url
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -129,7 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -143,7 +141,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -154,10 +151,19 @@ MEDIA_URL = '/media/'
 
 # If we are handling our own CSS / JS where would they be stored?
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static_my_proj")
+    os.path.join(BASE_DIR, "../../static_my_proj")
 ]
 
 # All the static files from the CDN server will be put in here
-STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn", "static_root")
-MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
+STATIC_ROOT = os.path.join(BASE_DIR, "../../static_cdn", "static_root")
+MEDIA_ROOT = os.path.join(BASE_DIR, "../../static_cdn", "media_root")
 
+CORS_REPLACE_HTTPS_REFERER = False
+HOST_SCHEME = "http://"
+SECURE_PROXY_SSL_HEADER = None
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_HSTS_SECONDS = None
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_FRAME_DENY = False

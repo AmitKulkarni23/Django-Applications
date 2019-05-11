@@ -25,6 +25,7 @@ from django.contrib.auth.views import LogoutView
 from adresses.views import checkout_address_create_view, checkout_address_reuse_view
 from carts.views import cart_detail_api_view
 from billing.views import payment_method_view, payment_method_createview
+from marketing.views import MarketingPreferenceUpdateView, MailchimpWebHookView
 
 urlpatterns = [
     path(r"", home_page, name="home"),
@@ -43,6 +44,8 @@ urlpatterns = [
     path("register/guest/", guest_register_view, name="guest_register"),
     path("checkout/address/create", checkout_address_create_view, name="checkout_address_create"),
     path("checkout/address/reuse", checkout_address_reuse_view, name="checkout_address_reuse"),
+    path("settings/email", MarketingPreferenceUpdateView.as_view(), name="marketing-pref"),
+    path("webhooks/mailchimp/", MailchimpWebHookView.as_view(), name="webhooks-mailchimp"),
     path('admin/', admin.site.urls),
 
 ]
