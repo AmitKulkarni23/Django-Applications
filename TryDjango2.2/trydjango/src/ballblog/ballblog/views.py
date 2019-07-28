@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 def home_page(request):
     my_title = "Home Page"
-    return render(request, "hello_world.html", {"title": my_title})
+    return render(request, "home.html", {"title": my_title})
 
 
 def about_page(request):
