@@ -1,0 +1,32 @@
+WHAT IS DJANGO?
+
+Django is a web-application framework written in Python
+
+Django is all in Python
+------------------------------------------
+
+CHAPTER 2 - Overview
+Foundation of Django
+
+What we are building?
+- Blog
+- Upload Images
+- Django Admin
+- Publish Time
+- Search
+
+
+How to create
+- Views
+- Users and Authenticating users
+- Upload images and files
+- Regular forms and model forms in Django
+- Data that you want to store data on the database
+- URLs
+- HTML templates -> How template variables work?
+- Bootstrap
+
+CRUD concepts
+
+------------------------------------------
+
