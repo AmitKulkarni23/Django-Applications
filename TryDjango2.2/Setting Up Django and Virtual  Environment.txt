@@ -25,6 +25,7 @@ ballblog
 		- wsgi.py
 		- __init__.py
 	- manage.py
+	- db.sqlite3
 	
 $ python manage.py runserver
 

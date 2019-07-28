@@ -42,3 +42,17 @@ urlpatterns = [
     path('contact/', contact_page),
     path('admin/', admin.site.urls),
 ]
+
+--------------------------
+
+Chapter 8 - path vs re_path vs url
+
+path('', home_page),
+
+path method -> Django 2.0 and above
+re_path -> Regular expression
+
+
+re_path('^about/$', about_page)
+
+--------------------------

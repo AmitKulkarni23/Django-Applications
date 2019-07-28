@@ -160,4 +160,122 @@ We need to update our production settings to use PostgreSQL database installed i
 Before pushing to heroku, disable collect static
 $ heroku config:set DISABLE_COLLECTSTATIC=1
 
+
+
+DESTROYING AN APP ON HEROKU
+$ heroku detsroy:apps <app-name>
+
+IF THERE IS A GIT REMOTE RELATED TO SUCH AN APP THAT SHOULD BE DELETD AS WELL
+git remote rm heroku
+
+
+NEED TO SET A HEROKU buildpack
+$ heroku buildpacks:set heroku/python
+
+
+THEN, we need to run migrations on Heroku
+$ heroku run python manage.py migrate
+
 =================================================
+
+AWS S3 for static files
+
+https://www.codingforentrepreneurs.com/blog/s3-static-media-files-for-django/
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListAllMyBuckets"
+            ],
+            "Resource": "arn:aws:s3:::*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+                "s3:ListBucketMultipartUploads",
+                "s3:ListBucketVersions"
+            ],
+            "Resource": "arn:aws:s3:::<your_bucket_name>"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*Object*",
+                "s3:ListMultipartUploadParts",
+                "s3:AbortMultipartUpload"
+            ],
+            "Resource": "arn:aws:s3:::<your_bucket_name>/*"
+        }
+    ]
+}
+
+
+POLICY NAME = amit-homefoods-bucket
+
+
+
+Upload things into a S3 bucket
+We need to create S3 bucket here
+
+
+Need to update CORS configuration
+What is CORS? - Cross origin resource sharing
+
+Although you may not notice it, the web pages you visit make frequent requests to load assets like 
+images, fonts, and more, from many different places across the Internet. If these requests for 
+assets go unchecked, the security of your browser may be at risk. For example, 
+your browser may be subject to hijacking, or your browser might blindly download malicious code. 
+As a result, many modern browsers follow security policies to mitigate such risks.
+
+
+A request for a resource (like an image or a font) outside of the origin is known as a 
+cross-origin request. CORS (cross-origin resource sharing) manages cross-origin requests.
+
+
+boto and boto3 -> AWS python bindings
+django-storages -> How we are going to handle our static files to be sent to AWS
+
+
+
+NEXT STEP: Add the third part applications storages to your settings.py file ( To all base.py, local.py and production.py)
+
+$ python manage.py migrate
+
+
+
+Cereate a new aws folder under ecommerce
+
+
+ecommerce
+	aws
+		- __init__.py
+		- utils.py
+		
+utils.py
+
+from storages.backends.s3boto3 import S3Boto3Storage
+
+StaticRootS3BototoStorage = lambda : S3Boto3Storage(location="static")
+MediaRootS3BototoStorage = lambda : S3Boto3Storage(location="media")
+
+Create folders in your bucket "static" and "media"
+
+
+
+conf.py in newly created aws module
+
+
+AWS_GROUP_NAME = "Amit-HomeFoods"
+AWS_USER_NAME = "amit-homefoods"
+AWS_ACCESS_KEY_IDS = "AKIAYVVU5ZWXMRPE3S24"
+AWS_SECRET_KEY = "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"
+
+
+
+How does django storages query?
+All of the variable names are present in the documentation
