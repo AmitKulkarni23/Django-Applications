@@ -21,11 +21,13 @@ from .views import (
     contact_page,
     example_page,
 )
+from blog.views import blog_post_detail_page
 
 urlpatterns = [
     path('', home_page),
     path('about/', about_page),
     path('contact/', contact_page),
     path('example/', example_page),
+    path('blog/', blog_post_detail_page),
     path('admin/', admin.site.urls),
 ]
