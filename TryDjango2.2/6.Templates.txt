@@ -1,0 +1,197 @@
+Chapter 8 - Your First Template
+
+Returning HttpResponse is fine but we want to return an actual HTML file
+
+src
+	- ballblog
+		- templates
+			-hello_world.html
+
+In views.py
+
+from django.shortcuts import render
+
+def home_page(request):
+    return render(request, "hello_world.html")
+
+
+But error:
+TemplateDoesNotExist at /
+
+This is something similar to a sevrer error
+
+We did not setup our 'templates' folder.
+
+HOW TO LOOK AT ALL THE SETTINGS VARIABLES?
+$ python manage.py shell
+>>> from django.conf import settings
+>>> settings.BASE_DIR
+
+E:\\SelfLearning\\Mozilla\\locallibrary\\Django-Applications\\TryDjango2.2\\trydjango\\src\\ballblog
+
+
+In settings.py( To overcome the TemplateDoesNotExist at \ error)
+TEMPLATES = [
+	{
+		'DIRS' = [os.path.join(BASE_DIR, 'templates')]
+	}	
+]
+
+----------------------------------
+
+Chapter 12 - Render Context in Templates
+String substitution in Python
+
+>>> abc = "This is {0}".format("awesome")
+
+Using variable
+
+>>> abc = "This is {another}".format(another="awesome")
+
+
+def home_page(request):
+    my_title = "Home Page"
+    return render(request, "hello_world.html", {"title" : my_title})
+	
+{"title" : my_title} -> is the context variable here.
+
+In hello_world.html
+<div class="container">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+</div>
+
+----------------------------------
+
+Chapter 13
+- Stay DRY with TEMPLATES
+
+Concept in web development DRY - Don't repeat yourself
+If you wanted about.html -> you would copy everything in hello_world.html and replace only something.
+
+Django has something built for this.
+
+base.html -> Parent of all my HTML docs
+Calling it base.html is convention.
+Suppose you want to habve something consistent across all your .html (say website logog, website title)
+
+In about.html
+{% extends "base.html" %}
+
+In contact.html
+{% extends "base.html" %}
+
+In home.html
+{% extends "base.html" %}
+
+TEMPLATE INHERITANCE
+
+But what about other content that is not passed thorugh the context dictionary.
+Suppose you had:
+
+In about.html
+
+In about.html
+{% extends "base.html" %}
+
+<b> This is about us</h1>
+
+
+NOTE: <b> This is about us</h1> won't be displayed at all.
+
+New concept {% block %}
+
+In base.html
+<div class="container">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <h1>{{ title }}</h1>
+            {% block %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+Can give "blocks" names
+
+In about.html
+{% extends "base.html" %}
+{% block content %}
+<b> About Us</b>
+{% endblock %}
+
+----------------------------------
+
+Chapter 14
+- Rendering any kind of template( You can even render .txt files)
+
+How to use HttpResponse with templates
+
+
+from django.template.loader import get_template
+def example_page(request):
+    template_name = "home.html"
+    template_obj = get_template(template_name)
+    context = {"title": "Example"}
+    return HttpResponse(template_obj.render(context))
+	
+----------------------------------
+
+Template Context Processors
+
+What can be rendered?
+
+
+{% extends "base.html" %}
+{% block content %}
+{{ title }}
+{{ user }} # These are not passed in the context dictionary
+{{ user.is_authenticated }} # These are not passed in the context dictionary
+{{ request }} # These are not passed in the context dictionary
+{% endblock %}
+
+
+
+So how are these being sent to the template engine?
+Ans: They are being sent from teh context processors
+
+In settings.py
+
+TEMPLATES = [
+    {
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+----------------------------------
+
+Built-In Template Tags
+
+extends
+block
+
+1) If block 
+{% if user.is_authenticated %}
+
+{% endif %}
+
+
+2) Looping
+{% for a in my_list %}
+	<li>{{ a }}</li>
+{% endfor %}
+
+
+Most of the time you want your condition logic inside views.
+
+----------------------------------
