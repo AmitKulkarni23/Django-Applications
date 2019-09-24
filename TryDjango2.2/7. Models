@@ -238,3 +238,19 @@ Chapter 31 . Include URLs
 Each App - should do one thing and one thing really well
 App - Each app should be pluggable
 
+Note: Admin is pluggable
+Admin URLS do not bloat your urls.py file.
+
+In blog/ -> Create a new file called urls.py. Add urlpatterns related to blog:
+urlpatterns = [
+    path('', blog_post_list_view),
+    path('<str:slug>/', blog_post_detail_view),
+    path('<str:slug>/edit/', blog_post_update_view),
+    path('<str:slug>/delete/', blog_post_delete_view),
+]
+
+
+In ballblog/urls.py - (This is your main urls file)
+path("blog/", include("blog.urls")),
+
+--------------------------------
