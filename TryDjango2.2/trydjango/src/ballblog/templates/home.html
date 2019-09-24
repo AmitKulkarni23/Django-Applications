@@ -1,1 +1,8 @@
 {% extends "base.html" %}
+{% block content %}
+{{ title }}<br/>
+<b>User: {{ user }}</b><br/>
+<b> Is user authenticated? {{ user.is_authenticated }}</b><br/>
+<b> Request = {{ request.user }}</b><br/>
+<b> request.path = {{ request.path }}</b><br/>
+{% endblock %}
