@@ -256,4 +256,33 @@ In list.html
 <li><a href="{{ object.get_absolute_url}}">{{ object.title }}</li>
 
 We can do the same for other URLs as well
+def get_edit_url(self):
+	return f"/blog/{self.slug}/edit"
 
+def get_delete_url(self):
+	return f"/blog/{self.slug}/delete"
+
+------------------------------------
+
+Chapter 45. Include the Navbar
+
+
+------------------------------------
+
+Chapter 46. Include with arguments
+{% include %} can be used inside an iteration
+
+"with"
+
+{% include 'blog/list_inline.html' with blog_post=object %}
+
+------------------------------------
+
+Chapter 47. An Included Template for Consistent Design
+
+<p class="card-text">{{ blog_post.content|linebreak|truncatewords:30}}</p>
+
+linebreak -> This reformats the text(in this case the blog content to how it should look)
+truncatewords:30 -> Show only the first 30 words
+
+------------------------------------

@@ -1,0 +1,96 @@
+Chapter 48. Publish Date, TimeStamp & Updated
+
+publish_date = models.DateTimeField()
+
+timestamp = models.DateTimeField(auto_now_add=True)
+
+auto_now_add -> When you create this in the database this field gets changed
+updated = models.DateTimeField(auto_now=True)
+
+auto_now -> Whenever you hit save/update it this will change
+
+class Meta:
+	ordering = ["-publish_date", "updated", "timestamp"]
+
+This is how you order your blog posts
+(- -> is the negative sign here )
+	
+
+--------------------------------------
+
+Chapter 49. Model Managers and Custom Query Sets
+
+So we have a lot of blog posts that haven't been published.
+We need to eliminate those from being displayed.
+
+class BlogPostQuerySet(models.QuerySet):
+    def published(self):
+        now = timezone.now()
+        # get_queryset is equivalent to BlogPost.objects
+        return self.filter(publish_date__lte=now)
+
+
+class BlogPostManager(models.Manager):
+    def get_queryset(self):
+        return BlogPostQuerySet(self.model, using=self._db)
+
+
+# Create your models here.
+class BlogPost(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    title = models.CharField(max_length=120)
+    content = models.TextField(null=True, blank=True)
+    slug = models.SlugField(unique=True)
+    publish_date = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    objects = BlogPostManager()
+
+blog/views.py
+def blog_post_list_view(request):
+    # Can list out objects
+    # Can also be a search view
+    # get all of the objects in the database
+    qs = BlogPost.objects.published()
+
+    template_name = "blog/list.html"
+    context = {"object_list": qs}
+    return render(request, template_name, context)
+
+
+--------------------------------------
+
+Chapter 50. Published & Draft Posts
+
+
+What if I am logged in and I want to see all posts irrespective of whether I am logged-in or not?
+
+1st way:
+def blog_post_list_view(request):
+    qs = BlogPost.objects.all().published()
+    if request.user.is_authenticated:
+        qs = BlogPost.objects.filter(user=request.user)
+    template_name = "blog/list.html"
+    context = {"object_list": qs}
+    return render(request, template_name, context)
+
+
+
+2nd way:
+
+if request.user.is_authenticated:
+	my_qs = BlogPost.objects.filter(user=request.user)
+	qs = (qs | my_qs).disntict()
+
+
+
+--------------------------------------
+
+Chapter 51.
+
+
+
+--------------------------------------
+
+Chapter 52.

@@ -13,15 +13,14 @@ class BlogPostModelForm(forms.ModelForm):
     # title = forms.CharField() or title.Textarea()
     class Meta:
         model = BlogPost
-        fields = ["title", "slug", "content"]
+        fields = ["title", "slug", "content", "publish_date"]
 
     def clean_title(self, *args, **kwargs):
         instance = self.instance
-        print(instance)
         title = self.cleaned_data.get('title')
         qs = BlogPost.objects.filter(title__iexact=title)
         # We are removing this instance from our queryset
-        # We do not want to do this validation on the instance that we chnaging
+        # We do not want to do this validation on the instance that we changing
         if instance:
             qs = qs.exclude(pk=instance.pk)
         if qs.exists():

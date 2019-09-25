@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-{{ title }}<br/>
-<b>User: {{ user }}</b><br/>
-<b> Is user authenticated? {{ user.is_authenticated }}</b><br/>
-<b> Request = {{ request.user }}</b><br/>
-<b> request.path = {{ request.path }}</b><br/>
+<h1>{{ title }}</h1><br/>
+
+{% for a in blog_list %}
+    {% include 'blog/list_inline.html' with blog_post=a truncate=True detail=False %}
+{% endfor %}
+
+
 {% endblock %}
