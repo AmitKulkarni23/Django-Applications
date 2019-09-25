@@ -87,10 +87,87 @@ if request.user.is_authenticated:
 
 --------------------------------------
 
-Chapter 51.
+Chapter 51. Static Files and Uploading Files
 
+Upload items to my logpost images/files etc..
 
+Step1 - Setting up settings.py
+STATIC_URL = '/static/' 
+
+CSS, JS - that you need Django to reference.
+
+LOCAL_STATIC_CDN_PATH = os.path.join(os.path.dirname(BASE_DIR), "static_cdn_test")
+STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, "static") # AWS S3, live CDN
+STATICFILES_DIRS = [
+    # Local version of static files
+    # Where you make some changes and later will be uploaded
+    # to your static root
+    os.path.join(BASE_DIR, 'staticfiles')
+]
+
+MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, "media")
+MEDIA_URL = "/media/"
+
+class BlogPost(models.Model):
+	...
+	...
+	image = models.FileField(upload_to='image/', blank=True, null=True)
+	
+When you upload an image from the admin, it goes to MEDIA_ROOT
 
 --------------------------------------
 
-Chapter 52.
+Chapter 52. Image Field and Uploading Images
+
+Change file field to an image field
+$ pip install pillow
+
+pillow -> Python image library
+
+
+class BlogPostModelForm(forms.ModelForm):
+    # Note: The "title" field in the BlogPost model can be overridden here
+    # title = forms.CharField() or title.Textarea()
+    class Meta:
+        model = BlogPost
+        fields = ["title", "slug", "image", "content", "publish_date"]
+		
+But in our form.html we will do
+<form method="POST" action="." enctype="multipart/form-data"> {% csrf_token %}
+
+enctype - let's you specify the endocing type for your form.
+
+
+In views.py
+def blog_post_create_view(request):
+	form = BlogPostModelForm(request.POST or None, request.FILES or None)
+
+In list_inline.html
+{% if blog_post.image %}
+	<img src="{{ blog_post.image.url}}" class="card-img-top">
+{% endif %}
+
+--------------------------------------
+
+Chapter 53. Putting it all together
+Seacrh
+
+- Will have some sort of query
+- When you search it, it should go to it's own view
+- A question mark was added to the URL
+
+def search_view(request):
+    print("Coming here")
+    template_name = "searches/view.html"
+    query = request.GET.get('q', None)
+    user = None
+    if request.user.is_authenticated:
+        user = request.user
+
+    SearchQuery.objects.create(user=user, query=query)
+    context = {"query": query}
+    return render(request, template_name, context)
+	
+--------------------------------------
+
+Chapter 54. Complex Lookups

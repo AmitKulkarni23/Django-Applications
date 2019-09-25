@@ -1,0 +1,3 @@
+This is the blank folder.
+Any changes made to this local copy will be transferred to the STATIC_ROOT endpoint after executing the command:
+$ python manage.py collectstatic

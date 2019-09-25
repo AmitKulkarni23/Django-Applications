@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # My App
     'blog',
+    'searches',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOCAL_STATIC_CDN_PATH = os.path.join(os.path.dirname(BASE_DIR), "static_cdn_test")
+STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, "static") # AWS S3, live CDN
+STATICFILES_DIRS = [
+    # Local version of static files
+    # Where you make some changes and later will be uploaded
+    # to your static root
+    os.path.join(BASE_DIR, 'staticfiles')
+]
+
+MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, "media")
+MEDIA_URL = "/media/"
+
+
+
+

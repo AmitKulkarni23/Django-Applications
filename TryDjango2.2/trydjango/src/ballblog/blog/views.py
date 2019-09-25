@@ -26,7 +26,7 @@ def blog_post_create_view(request):
     # Create objects
     # How? - use forms
     # form = BlogPostForm(request.POST or None) # This is just the form
-    form = BlogPostModelForm(request.POST or None) # This is teh model form
+    form = BlogPostModelForm(request.POST or None, request.FILES or None) # This is the model form
 
     if form.is_valid():
         # obj = BlogPost.objects.create(**form.cleaned_data)
