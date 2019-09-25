@@ -241,3 +241,19 @@ def blog_post_delete_view(request, slug):
         return redirect("/blog")
     context = {"object": obj}
     return render(request, template_name, context)
+	
+------------------------------------
+
+Chapter 44. Blog Post Naviagation
+
+We have to update our list view to have links
+
+In our models.py
+def get_absolute_url(self):
+	return f"blog/{self.slug}"
+
+In list.html
+<li><a href="{{ object.get_absolute_url}}">{{ object.title }}</li>
+
+We can do the same for other URLs as well
+

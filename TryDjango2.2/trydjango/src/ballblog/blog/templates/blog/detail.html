@@ -2,4 +2,14 @@
 {% block content %}
 <h1>{{ object.title }}</h1>
 <h1>{{ object.content }}</h1>
+
+{% if request.user.is_authenticated %}
+    {% if request.user.is_staff %}
+        <a href="{{ object.get_edit_url }}">Edit</a>
+        <a href="{{ object.get_delete_url }}">Delete</a>
+    {% endif %}
+
+{% endif %}
+
+
 {% endblock %}

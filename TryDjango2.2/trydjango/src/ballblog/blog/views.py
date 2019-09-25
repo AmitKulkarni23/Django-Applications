@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from .models import BlogPost
 from .forms import BlogPostForm, BlogPostModelForm
 from django.contrib.auth.decorators import login_required
@@ -23,13 +23,14 @@ def blog_post_list_view(request):
 def blog_post_create_view(request):
     # Create objects
     # How? - use forms
-    form = BlogPostForm(request.POST or None) # This is just the form
+    # form = BlogPostForm(request.POST or None) # This is just the form
     form = BlogPostModelForm(request.POST or None) # This is teh model form
 
     if form.is_valid():
         # obj = BlogPost.objects.create(**form.cleaned_data)
-        # form = BlogPostForm()
-        form.save()
+        obj = form.save(commit=False)
+        obj.user = request.user
+        obj.save()
         form = BlogPostModelForm()
 
     template_name = "blog/form.html"
@@ -46,17 +47,26 @@ def blog_post_detail_view(request, slug):
     return render(request, template_name, context)
 
 
+@staff_member_required
 def blog_post_update_view(request, slug):
     # Will have to grab the original object
     # Need to update that object
-    template_name = "blog/update.html"
+    template_name = "form.html"
     obj = get_object_or_404(BlogPost, slug=slug)
-    context = {"form": None, "object": obj}
+    form = BlogPostModelForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+    context = {"form": form, "title": f"Update {obj.title}"}
     return render(request, template_name, context)
 
 
+@staff_member_required
 def blog_post_delete_view(request, slug):
     template_name = "blog/delete.html"
     obj = get_object_or_404(BlogPost, slug=slug)
+    if request.method == "POST":
+        obj.delete()
+        # BUT, we want to redirect them to another view
+        return redirect("/blog")
     context = {"object": obj}
     return render(request, template_name, context)
