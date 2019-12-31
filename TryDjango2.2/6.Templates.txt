@@ -76,7 +76,7 @@ Django has something built for this.
 
 base.html -> Parent of all my HTML docs
 Calling it base.html is convention.
-Suppose you want to habve something consistent across all your .html (say website logog, website title)
+Suppose you want to havve something consistent across all your .html (say website logog, website title)
 
 In about.html
 {% extends "base.html" %}
@@ -109,7 +109,7 @@ In base.html
     <div class="row">
         <div class="col-6 mx-auto">
             <h1>{{ title }}</h1>
-            {% block %}
+            {% block content %}
             {% endblock %}
         </div>
     </div>

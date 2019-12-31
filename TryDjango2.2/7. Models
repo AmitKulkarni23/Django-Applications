@@ -68,6 +68,10 @@ Above 2 commands -> whatever is in our model will be in our dB
 
 --------------------------------
 
+
+
+--------------------------------
+
 Chapter 19.
 Model to Django Admin
 
@@ -200,7 +204,7 @@ Chapter 27. CRUD & Views
 
 Django checks for this request in urls.py
 Sends the request to the appropriate view
-Teh view sends in a response
+The view sends in a response
 
 request.method
 request.path

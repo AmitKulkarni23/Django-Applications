@@ -21,7 +21,12 @@ Maps to dB technologies - Django ORM(Object Relational Mapping)
 Object Relational Mapping - is a technique that lets you query and manipulate data from a database using an object-oriented paradigm
 
 User info is persistent.
-All this data is stored in db.sqlite3
+All this data is stored in db.sqlite3.
+
+MTV
+Model
+Template
+View
 
 ----------------------------------------
 
