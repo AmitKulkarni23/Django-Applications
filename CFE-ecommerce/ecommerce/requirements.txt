@@ -1,5 +1,5 @@
 requests==2.21.0
-Django==2.1.7
+Django==2.2.24
 stripe==2.24.0
 urllib3==1.22
 certifi==2018.1.18
