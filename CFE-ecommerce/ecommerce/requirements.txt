@@ -2,7 +2,7 @@ requests==2.21.0
 Django==2.1.7
 stripe==2.24.0
 urllib3==1.22
-certifi==2018.1.18
+certifi==2022.12.7
 chardet==3.0.4
 idna==2.6
 Pillow==5.0.0
